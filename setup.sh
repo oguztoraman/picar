@@ -1,8 +1,8 @@
 #! /bin/bash
 #
-#   Setup.sh
+#  Setup.sh
 #   
-#   A bash script that updates the system and installs necessary software packages for PiCar
+#  A bash script that updates the system and installs necessary software packages for PiCar
 #   
 echo "Updating the system..."
 sudo apt update
