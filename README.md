@@ -41,3 +41,4 @@ Photo will be added
 - [Raspberry Pi Pinout](https://pinout.xyz/pinout/wiringpi#)
 - [Usage of HC-SR04 Ultrasonic Distance Sensor on Raspberry Pi](https://thepihut.com/blogs/raspberry-pi-tutorials/hc-sr04-ultrasonic-range-sensor-on-the-raspberry-pi)
 - [Usage of Raspicam](https://www.uco.es/investiga/grupos/ava/node/40)
+- [Cppreference](https://en.cppreference.com/w/)
