@@ -2,7 +2,8 @@
 
 PiCar is a car platform for testing autonomous driving software.
 
-Photo will be added
+## Photo 
+- will be added
 
 ## List of Used Components
 - [Raspberry Pi Model 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
