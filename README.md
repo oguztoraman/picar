@@ -19,6 +19,10 @@ PiCar is a car platform for testing autonomous driving software.
 - [OpenCV](https://opencv.org/)
 - [WiringPi](http://wiringpi.com/)
 
+## Circuit Diagram 
+- Will be added
+
+
 ## Usage
 1. Install git on Raspberry Pi. `sudo apt install -y git`
 2. Clone this repo. `git clone https://github.com/oguztoraman/picar`
