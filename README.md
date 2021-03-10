@@ -13,6 +13,7 @@ PiCar is a car platform for testing autonomous driving software.
 - 2 x [SG90 9G Mini Servo Motor](http://www.ee.ic.ac.uk/pcheung/teaching/DE1_EE/stores/sg90_datasheet.pdf)
 - 4WD Robot Car Platform
 - A3 Compact Li-po (2-3S) Charger for Battery
+- Jumper Wires
 
 ## Required Software Libraries
 - [Raspicam](https://www.uco.es/investiga/grupos/ava/node/40)
