@@ -27,6 +27,9 @@ PiCar is a car platform for testing autonomous driving software.
 5. Write your autonomous driving test code in main.cpp and compile whole project. `make all`
 6. Run your code. `./picar`
 
+## License
+- GPLv3. See the COPYING file for details.
+
 ## References
 - [Raspberry Pi Pinout](https://pinout.xyz/pinout/wiringpi#)
 - [Usage of HC-SR04 Ultrasonic Distance Sensor on Raspberry Pi](https://thepihut.com/blogs/raspberry-pi-tutorials/hc-sr04-ultrasonic-range-sensor-on-the-raspberry-pi)
