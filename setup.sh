@@ -10,3 +10,4 @@ sudo apt upgrade -y
 echo "Installing necessary softwares..."
 sudo apt install -y g++ libopencv-dev make wiringpi
 echo "Setup finished."
+exit
