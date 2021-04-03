@@ -295,9 +295,9 @@ void PiCar::set_camera_to_default_position(void)
  * using ultrasonic distance sensor.
  * 
  * To use HC-SR04 ultrasonic distance sensor;
- * -set trig pin to high along 10 microseconds
- * -measure the time interval between sending trigger signal 
- *  and receiving echo signal in microseconds.
+ * -set trig pin to high voltage along 10 microseconds
+ * -measure the time interval of reading high voltage 
+ * at echo pin in microseconds.
  * -divide the measured time by 58 to find
  * 	distance in cantimeters
  * -and wait for 150 microseconds
