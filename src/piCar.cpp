@@ -307,7 +307,7 @@ void PiCar::set_camera_to_default_position(void)
  * 
  */
 
-int PiCar::get_distance_from_obstacle(void)
+int PiCar::get_distance_from_obstacle(void) const
 {
 	digitalWrite(trig_pin, HIGH);
 	delayMicroseconds(10);
