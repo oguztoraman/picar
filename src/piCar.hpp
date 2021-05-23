@@ -60,7 +60,7 @@ public:
 	void set_camera_to_default_position(void);
 	void turn_camera(int direction, float degree);
 	
-	int get_distance_from_obstacle(void);
+	int get_distance_from_obstacle(void) const;
 	
 	void stop(void);
 	
