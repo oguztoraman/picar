@@ -20,8 +20,8 @@
  * 
  */
 
-#ifndef PICAR
-#define PICAR
+#ifndef PICAR_H
+#define PICAR_H
 
 /*  Camera resolution  */
 
@@ -78,4 +78,4 @@ private:
 	void set_horizontal_servo_to_position(int pos_h);
 };
 
-#endif /* PICAR */
+#endif /* PICAR_H */
