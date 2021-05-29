@@ -44,7 +44,7 @@
 
 #define POWER 30
 
-PiCar car(SERVO_V, SERVO_H, TRIG, ECHO, POWER);
+PiCar car{SERVO_V, SERVO_H, TRIG, ECHO, POWER};
 
 
 int main(void)
