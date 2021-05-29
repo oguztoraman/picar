@@ -73,7 +73,6 @@ private:
 	int echo_pin;
 	int engine_power;
 	
-	void initial_setup(void);
 	void set_vertical_servo_to_position(int pos_v);
 	void set_horizontal_servo_to_position(int pos_h);
 };
