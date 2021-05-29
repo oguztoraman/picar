@@ -54,18 +54,21 @@
 #define MOTOR_L_F_PIN 29
 #define MOTOR_L_B_PIN 28
 
+/*
+ * Constructor
+ *
+ */
+PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power): servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}, engine_power{power}
+{
+	initial_setup();
+}
+
 /* 
  * initial_setup  
  * 
  * This function sets the necessary initial settings for PiCar.
  * 
  */
-PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power): servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}, engine_power{power}
-{
-		initial_setup();
-}
-
-
 void PiCar::initial_setup(void){
 	
 	/* WiringPi setup */
