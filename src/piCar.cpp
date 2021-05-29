@@ -66,7 +66,7 @@ PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power) : servo_v_
 	/* WiringPi setup */
 	
 	if (wiringPiSetup () == -1){
-		std::cerr << "Error! Couldn't setup WiringPi." << "\n";
+		std::cerr << "Error! Couldn't setup WiringPi.\n";
 		exit(1);
 	}
 	
@@ -95,7 +95,7 @@ PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power) : servo_v_
 	camera.set(CV_CAP_PROP_FRAME_WIDTH, CAMERA_RESOLUTION_W);
 	camera.set(CV_CAP_PROP_FRAME_HEIGHT, CAMERA_RESOLUTION_H);
 	if (!camera.open()){
-		std::cerr << "Error! Couldn't open the Camera." << "\n";
+		std::cerr << "Error! Couldn't open the Camera.\n";
 		exit(2);
 	}
 	
