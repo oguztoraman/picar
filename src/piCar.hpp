@@ -48,12 +48,8 @@ public:
 	cv::Mat camera_input;
 	raspicam::RaspiCam_Cv camera;
 	
-	PiCar(int servo_v, int servo_h, int trig, int echo, int power){
-		servo_v_pin = servo_v;
-		servo_h_pin = servo_h;
-		trig_pin = trig;
-		echo_pin = echo;
-		engine_power = power;
+	PiCar(int servo_v, int servo_h, int trig, int echo, int power): servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}, engine_power{power}
+	{
 		initial_setup();
 	}
 	
