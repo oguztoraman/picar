@@ -213,7 +213,7 @@ void PiCar::turn_camera(enum Camera direction, float degree)
 				set_vertical_servo_to_position(6);	/*	~90 degrees	*/
 			}
 			break;
-		case Camera::Dowm :
+		case Camera::Down :
 			if (degree < 3.75){
 				set_vertical_servo_to_position(15);	/*	~0 degree	*/
 			} else if (degree >= 3.57 && degree < 11.25){
@@ -456,7 +456,7 @@ void PiCar::go_backward(void)
 
 void PiCar::turn_car(enum Car direction)
 {
-	switcht (direction) {
+	switch (direction) {
 		case Car::Turn_Right_Forward :
 			digitalWrite(MOTOR_R_F_PIN, LOW);
 			digitalWrite(MOTOR_R_B_PIN, LOW);
