@@ -32,7 +32,7 @@ PiCar is a car platform for testing autonomous driving software.
 2. Clone this repo. `git clone https://github.com/oguztoraman/picar`
 3. Run setup.sh. `cd picar && bash setup.sh`
 4. Install the latest version of Raspicam from [here](https://sourceforge.net/projects/raspicam/files/) on Raspbery Pi.
-5. Write your autonomous driving test code in main.cpp and compile whole project with `make`
+5. Write your autonomous driving test code in main.cpp and compile the whole project with `make`
 6. Run your code with `./picar`
 
 ## License
