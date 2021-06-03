@@ -54,6 +54,8 @@
 #define MOTOR_L_F_PIN 29
 #define MOTOR_L_B_PIN 28
 
+/* Definitions of PiCar class member functions */
+
 /*
  * Constructor
  * 
@@ -61,7 +63,7 @@
  *
  */
 
-PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power) : servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}, engine_power{power}
+PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power): servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}, engine_power{power}
 {
 	/* WiringPi setup */
 	
