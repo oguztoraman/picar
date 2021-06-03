@@ -130,99 +130,104 @@ PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power) : servo_v_
  * 
  * Parameters;
  * ->direction
- * 		RIGHT
- * 		LEFT
- * 		UP
- * 		DOWN
+ * 		Camera::Right
+ * 		Camera::Left
+ * 		Camera::Up
+ * 		Camera::Down
  * ->degree
  * 		degree value from default camera position
  * 
  */
 
-void PiCar::turn_camera(int direction, float degree)
+void PiCar::turn_camera(enum Camera direction, float degree)
 {
-	if (direction == RIGHT){
-		if (degree < 4.5){
-			set_horizontal_servo_to_position(14);	/*	~0 degree	*/
-		} else if (degree >= 4.5 && degree < 13.5){
-			set_horizontal_servo_to_position(13);	/*	~9 degrees	*/
-		} else if (degree >= 13.5 && degree < 22.5){
-			set_horizontal_servo_to_position(12);	/*	~18 degrees	*/
-		} else if (degree >= 22.5 && degree < 31.5){
-			set_horizontal_servo_to_position(11);	/*	~27 degrees	*/
-		} else if (degree >= 31.5 && degree < 40.5){
-			set_horizontal_servo_to_position(10);	/*	~36 degrees	*/
-		} else if (degree >= 40.5 && degree < 49.5){
-			set_horizontal_servo_to_position(9);	/*	~45 degrees	*/
-		} else if (degree >= 49.5 && degree < 58.5){
-			set_horizontal_servo_to_position(8);	/*	~54 degrees	*/
-		} else if (degree >= 58.5 && degree < 67.5){
-			set_horizontal_servo_to_position(7);	/*	~63 degrees	*/
-		} else if (degree >= 67.5 && degree < 76.5){
-			set_horizontal_servo_to_position(6);	/*	~72 degrees	*/
-		} else if (degree >= 76.5 && degree < 85.5){
-			set_horizontal_servo_to_position(5);	/*	~81 degrees	*/
-		} else if (degree >= 85.5){
-			set_horizontal_servo_to_position(4);	/*	~90 degrees	*/
-		}
-	} else if (direction == LEFT) {
-		if (degree < 5){
-			set_horizontal_servo_to_position(14);	/*	~0 degree	*/
-		} else if (degree >= 5 && degree < 15){
-			set_horizontal_servo_to_position(15);	/*	~10 degrees	*/
-		} else if (degree >= 15 && degree < 25){
-			set_horizontal_servo_to_position(16);	/*	~20 degrees	*/
-		} else if (degree >= 25 && degree < 35){
-			set_horizontal_servo_to_position(17);	/*	~30 degrees	*/
-		} else if (degree >= 35 && degree < 45){
-			set_horizontal_servo_to_position(18);	/*	~40 degrees	*/
-		} else if (degree >= 45 && degree < 55){
-			set_horizontal_servo_to_position(19);	/*	~50 degrees	*/
-		} else if (degree >= 55 && degree < 65){
-			set_horizontal_servo_to_position(20);	/*	~60 degrees	*/
-		} else if (degree >= 65 && degree < 75){
-			set_horizontal_servo_to_position(21);	/*	~70 degrees	*/
-		} else if (degree >= 75 && degree < 85){
-			set_horizontal_servo_to_position(22);	/*	~80 degrees	*/
-		} else if (degree >= 85){
-			set_horizontal_servo_to_position(23);	/*	~90 degrees	*/
-		}
-	} else if (direction == UP){
-		if (degree < 5){
-			set_vertical_servo_to_position(15);	/*	~0 degrees	*/
-		} else if (degree >= 5 && degree < 15){
-			set_vertical_servo_to_position(14);	/*	~10 degrees	*/
-		} else if (degree >= 15 && degree < 25){
-			set_vertical_servo_to_position(13);	/*	~20 degrees	*/
-		} else if (degree >= 25 && degree < 35){
-			set_vertical_servo_to_position(12);	/*	~30 degrees	*/
-		} else if (degree >= 35 && degree < 45){
-			set_vertical_servo_to_position(11);	/*	~40 degrees	*/
-		} else if (degree >= 45 && degree < 55){
-			set_vertical_servo_to_position(10);	/*	~50 degrees	*/
-		} else if (degree >= 55 && degree < 65){
-			set_vertical_servo_to_position(9);	/*	~60 degrees	*/
-		} else if (degree >= 65 && degree < 75){
-			set_vertical_servo_to_position(8);	/*	~70 degrees	*/
-		} else if (degree >= 75 && degree < 85){
-			set_vertical_servo_to_position(7);	/*	~80 degrees	*/
-		}  else if (degree >= 85){
-			set_vertical_servo_to_position(6);	/*	~90 degrees	*/
-		}
-	} else if (direction == DOWN){
-		if (degree < 3.75){
-			set_vertical_servo_to_position(15);	/*	~0 degree	*/
-		} else if (degree >= 3.57 && degree < 11.25){
-			set_vertical_servo_to_position(16);	/*	~7.5 degrees	*/
-		} else if (degree >= 11.25 && degree < 18.75){
-			set_vertical_servo_to_position(17);	/*	~15 degrees	*/
-		} else if (degree >= 18.75 && degree < 22.25){
-			set_vertical_servo_to_position(18);	/*	~22.5 degrees   */
-		}  else if (degree >= 22.25){
-			set_vertical_servo_to_position(19);	/*	~30 degrees	*/
-		}
-	} else {
-		std::cout << "Invalid direction!\n";
+	switch (direction) {
+		case Camera::Right :
+			if (degree < 4.5){
+				set_horizontal_servo_to_position(14);	/*	~0 degree	*/
+			} else if (degree >= 4.5 && degree < 13.5){
+				set_horizontal_servo_to_position(13);	/*	~9 degrees	*/
+			} else if (degree >= 13.5 && degree < 22.5){
+				set_horizontal_servo_to_position(12);	/*	~18 degrees	*/
+			} else if (degree >= 22.5 && degree < 31.5){
+				set_horizontal_servo_to_position(11);	/*	~27 degrees	*/
+			} else if (degree >= 31.5 && degree < 40.5){
+				set_horizontal_servo_to_position(10);	/*	~36 degrees	*/
+			} else if (degree >= 40.5 && degree < 49.5){
+				set_horizontal_servo_to_position(9);	/*	~45 degrees	*/
+			} else if (degree >= 49.5 && degree < 58.5){
+				set_horizontal_servo_to_position(8);	/*	~54 degrees	*/
+			} else if (degree >= 58.5 && degree < 67.5){
+				set_horizontal_servo_to_position(7);	/*	~63 degrees	*/
+			} else if (degree >= 67.5 && degree < 76.5){
+				set_horizontal_servo_to_position(6);	/*	~72 degrees	*/
+			} else if (degree >= 76.5 && degree < 85.5){
+				set_horizontal_servo_to_position(5);	/*	~81 degrees	*/
+			} else if (degree >= 85.5){
+				set_horizontal_servo_to_position(4);	/*	~90 degrees	*/
+			}
+			break;
+		case Camera::Left :
+			if (degree < 5){
+				set_horizontal_servo_to_position(14);	/*	~0 degree	*/
+			} else if (degree >= 5 && degree < 15){
+				set_horizontal_servo_to_position(15);	/*	~10 degrees	*/
+			} else if (degree >= 15 && degree < 25){
+				set_horizontal_servo_to_position(16);	/*	~20 degrees	*/
+			} else if (degree >= 25 && degree < 35){
+				set_horizontal_servo_to_position(17);	/*	~30 degrees	*/
+			} else if (degree >= 35 && degree < 45){
+				set_horizontal_servo_to_position(18);	/*	~40 degrees	*/
+			} else if (degree >= 45 && degree < 55){
+				set_horizontal_servo_to_position(19);	/*	~50 degrees	*/
+			} else if (degree >= 55 && degree < 65){
+				set_horizontal_servo_to_position(20);	/*	~60 degrees	*/
+			} else if (degree >= 65 && degree < 75){
+				set_horizontal_servo_to_position(21);	/*	~70 degrees	*/
+			} else if (degree >= 75 && degree < 85){
+				set_horizontal_servo_to_position(22);	/*	~80 degrees	*/
+			} else if (degree >= 85){	
+				set_horizontal_servo_to_position(23);	/*	~90 degrees	*/
+			}
+			break;
+		case Camera::Up :
+			if (degree < 5){
+				set_vertical_servo_to_position(15);	/*	~0 degrees	*/
+			} else if (degree >= 5 && degree < 15){
+				set_vertical_servo_to_position(14);	/*	~10 degrees	*/
+			} else if (degree >= 15 && degree < 25){
+				set_vertical_servo_to_position(13);	/*	~20 degrees	*/
+			} else if (degree >= 25 && degree < 35){
+				set_vertical_servo_to_position(12);	/*	~30 degrees	*/
+			} else if (degree >= 35 && degree < 45){
+				set_vertical_servo_to_position(11);	/*	~40 degrees	*/
+			} else if (degree >= 45 && degree < 55){
+				set_vertical_servo_to_position(10);	/*	~50 degrees	*/
+			} else if (degree >= 55 && degree < 65){
+				set_vertical_servo_to_position(9);	/*	~60 degrees	*/
+			} else if (degree >= 65 && degree < 75){
+				set_vertical_servo_to_position(8);	/*	~70 degrees	*/
+			} else if (degree >= 75 && degree < 85){
+				set_vertical_servo_to_position(7);	/*	~80 degrees	*/
+			}  else if (degree >= 85){
+				set_vertical_servo_to_position(6);	/*	~90 degrees	*/
+			}
+			break;
+		case Camera::Dowm :
+			if (degree < 3.75){
+				set_vertical_servo_to_position(15);	/*	~0 degree	*/
+			} else if (degree >= 3.57 && degree < 11.25){
+				set_vertical_servo_to_position(16);	/*	~7.5 degrees	*/
+			} else if (degree >= 11.25 && degree < 18.75){
+				set_vertical_servo_to_position(17);	/*	~15 degrees	*/
+			} else if (degree >= 18.75 && degree < 22.25){
+				set_vertical_servo_to_position(18);	/*	~22.5 degrees   */
+			}  else if (degree >= 22.25){
+				set_vertical_servo_to_position(19);	/*	~30 degrees	*/
+			}
+			break;
+		default: 
+			std::cout << "Invalid direction!\n";
 	}
 }
 
@@ -434,10 +439,10 @@ void PiCar::go_backward(void)
  * 
  * Parameters;
  * ->direction
- * 		TURN_RIGHT_FORWARD
- * 		TURN_RIGHT_BACKWARD
- * 		TURN_LEFT_FORWARD
- * 		TURN_LEFT_BACKWARD
+ * 		Car::Turn_Right_Forward
+ * 		Car::Turn_Right_Backward
+ * 		Car::Turn_Left_Forward
+ * 		Car::Turn_Left_Backward
  * 
  * Pay attention!
  * PiCar continues its motion after calling turn_car 
@@ -449,29 +454,34 @@ void PiCar::go_backward(void)
  * 
  */
 
-void PiCar::turn_car(int direction)
+void PiCar::turn_car(enum Car direction)
 {
-	if (direction == TURN_RIGHT_FORWARD){
-		digitalWrite(MOTOR_R_F_PIN, LOW);
-		digitalWrite(MOTOR_R_B_PIN, LOW);
-		digitalWrite(MOTOR_L_F_PIN, HIGH);
-		digitalWrite(MOTOR_L_B_PIN, LOW);
-	} else if (direction == TURN_LEFT_FORWARD){
-		digitalWrite(MOTOR_R_F_PIN, HIGH);
-		digitalWrite(MOTOR_R_B_PIN, LOW);
-		digitalWrite(MOTOR_L_F_PIN, LOW);
-		digitalWrite(MOTOR_L_B_PIN, LOW);
-	} else if (direction == TURN_RIGHT_BACKWARD){
-		digitalWrite(MOTOR_R_F_PIN, LOW);
-		digitalWrite(MOTOR_R_B_PIN, LOW);
-		digitalWrite(MOTOR_L_F_PIN, LOW);
-		digitalWrite(MOTOR_L_B_PIN, HIGH);
-	} else if (direction == TURN_LEFT_BACKWARD){
-		digitalWrite(MOTOR_R_F_PIN, LOW);
-		digitalWrite(MOTOR_R_B_PIN, HIGH);
-		digitalWrite(MOTOR_L_F_PIN, LOW);
-		digitalWrite(MOTOR_L_B_PIN, LOW);
-	} else {
-		std::cout << "Invalid direction!\n";
+	switcht (direction) {
+		case Car::Turn_Right_Forward :
+			digitalWrite(MOTOR_R_F_PIN, LOW);
+			digitalWrite(MOTOR_R_B_PIN, LOW);
+			digitalWrite(MOTOR_L_F_PIN, HIGH);
+			digitalWrite(MOTOR_L_B_PIN, LOW);
+			break;
+		case Car::Turn_Left_Forward :
+			digitalWrite(MOTOR_R_F_PIN, HIGH);
+			digitalWrite(MOTOR_R_B_PIN, LOW);
+			digitalWrite(MOTOR_L_F_PIN, LOW);
+			digitalWrite(MOTOR_L_B_PIN, LOW);
+			break;
+		case Car::Turn_Right_Backward :
+			digitalWrite(MOTOR_R_F_PIN, LOW);
+			digitalWrite(MOTOR_R_B_PIN, LOW);
+			digitalWrite(MOTOR_L_F_PIN, LOW);
+			digitalWrite(MOTOR_L_B_PIN, HIGH);
+			break;
+		case Car::Turn_Left_Backward :
+			digitalWrite(MOTOR_R_F_PIN, LOW);
+			digitalWrite(MOTOR_R_B_PIN, HIGH);
+			digitalWrite(MOTOR_L_F_PIN, LOW);
+			digitalWrite(MOTOR_L_B_PIN, LOW);
+			break;
+		default:
+			std::cout << "Invalid direction!\n";
 	}
 }
