@@ -40,7 +40,6 @@ enum class Car{ Turn_Right_Forward, Turn_Right_Backward, Turn_Left_Forward, Turn
 
 class PiCar {
 public:
-	
 	cv::Mat camera_input;
 	raspicam::RaspiCam_Cv camera;
 	
