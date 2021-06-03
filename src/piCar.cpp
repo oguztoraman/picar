@@ -316,10 +316,10 @@ int PiCar::get_distance_from_obstacle(void) const
 	auto start = std::chrono::steady_clock::now();
 	while (digitalRead(echo_pin) != LOW);
 	auto end = std::chrono::steady_clock::now();
-	std::chrono::duration<double> timeInterval = end - start;
-	int distance = int((timeInterval.count() / 58) * 1000000);
+	std::chrono::duration<double>timeInterval = end - start;
+	int distance = static_cast<int>((timeInterval.count() / 58) * 1000000);
 	if (distance < 0){
-		distance = -1;
+		return -1;
 	}
 	delay(150);
 	return distance;
