@@ -30,22 +30,11 @@
 
 #include "piCar.hpp"
 
-/* Ultrasonic distance sensor trig and echo pins (wiringPi) */
+/* Setup the car with default control pins and engine power */
 
-#define TRIG 6
-#define ECHO 1
+PiCar car;
 
-/* Servos' pwm pins (wiringPi) */
-
-#define SERVO_V 0
-#define SERVO_H 3
-
-/* Setup the car */
-
-#define POWER 30
-
-PiCar car{SERVO_V, SERVO_H, TRIG, ECHO, POWER};
-
+/* Your autonomous driving test code */
 
 int main(void)
 {
