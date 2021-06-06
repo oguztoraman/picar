@@ -29,6 +29,11 @@
 
 #include "piCar.hpp"
 
+/*  Camera resolution  */
+
+#define CAMERA_RESOLUTION_W 720
+#define CAMERA_RESOLUTION_H 720
+
 /* Servos' default positions */
 
 #define DEFAULT_VERTICAL_SERVO_POS 15
@@ -57,13 +62,22 @@
 /* Definitions of PiCar class member functions */
 
 /*
- * Constructor
+ * default constructor
  * 
- * This function sets the necessary initial settings for PiCar.
+ * This function sets the necessary initial settings for PiCar with desired/default control pins and engine power.
+ *
+ * Default engine power;
+ * -> POWER   = 50
+ *
+ * Default control pins(wiringPi);
+ * -> SERVO_V = 0
+ * -> SERVO_H = 3
+ * -> TRIG    = 6
+ * -> ECHO    = 1
  *
  */
 
-PiCar::PiCar(int servo_v, int servo_h, int trig, int echo, int power): servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}, engine_power{power}
+PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
 {
 	/* WiringPi setup */
 	
