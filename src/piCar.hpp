@@ -23,11 +23,6 @@
 #ifndef PICAR_H
 #define PICAR_H
 
-/*  Camera resolution  */
-
-#define CAMERA_RESOLUTION_W 720
-#define CAMERA_RESOLUTION_H 720
-
 /*  Camera directions  */
 
 enum class Camera{ Right, Left, Up, Down };
@@ -43,7 +38,11 @@ public:
 	cv::Mat camera_input;
 	raspicam::RaspiCam_Cv camera;
 	
-	PiCar(int servo_v, int servo_h, int trig, int echo, int power);
+	PiCar(int power = 50, int servo_v = 0, int servo_h = 3, int trig = 6, int echo = 1);
+	
+	PiCar(const PiCar& other) = delete;
+	
+	PiCar& operator=(const PiCar& other) = delete;
 	
 	void set_camera_to_default_position(void);
 	void turn_camera(enum Camera direction, float degree);
