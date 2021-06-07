@@ -41,7 +41,6 @@ public:
 	PiCar(int power = 50, int servo_v = 0, int servo_h = 3, int trig = 6, int echo = 1);
 	
 	PiCar(const PiCar& other) = delete;
-	
 	PiCar& operator=(const PiCar& other) = delete;
 	
 	void set_camera_to_default_position(void);
@@ -61,11 +60,11 @@ public:
 	void decrease_power_by(int decrement);
 	
 private:
+	int engine_power;
 	int servo_v_pin;
 	int servo_h_pin;
 	int trig_pin;
 	int echo_pin;
-	int engine_power;
 	
 	void set_vertical_servo_to_position(int pos_v);
 	void set_horizontal_servo_to_position(int pos_h);
