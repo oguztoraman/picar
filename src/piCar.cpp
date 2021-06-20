@@ -29,36 +29,6 @@
 
 #include "piCar.hpp"
 
-/*  Camera resolution  */
-
-#define CAMERA_RESOLUTION_W 720
-#define CAMERA_RESOLUTION_H 720
-
-/* Servos' default positions */
-
-#define DEFAULT_VERTICAL_SERVO_POS 15
-#define DEFAULT_HORIZONTAL_SERVO_POS 14
-
-/* Servos' rotation limits */
-
-#define VERTICAL_SERVO_MAX_POS_R 4
-#define VERTICAL_SERVO_MAX_POS_L 23
-
-#define HORIZONTAL_SERVO_MAX_POS_U 6
-#define HORIZONTAL_SERVO_MAX_POS_D 19
-
-/* Pwm pins (wiringPi) of right and left motors (from motor driver) */
-
-#define MOTORS_R_PWM_PIN 26
-#define MOTORS_L_PWM_PIN 25
-
-/* Control pins (wiringPi) of right and left motors (from motor driver) */
-
-#define MOTOR_R_F_PIN 22
-#define MOTOR_R_B_PIN 23
-#define MOTOR_L_F_PIN 29
-#define MOTOR_L_B_PIN 28
-
 /* Definitions of PiCar class member functions */
 
 /*
@@ -76,30 +46,25 @@
  * -> ECHO    = 1
  *
  */
-
-PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, servo_v_pin{servo_v}, servo_h_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
+PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, vertical_servo_pin{servo_v}, horizontal_servo_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
 {
 	/* WiringPi setup */
-	
 	if (wiringPiSetup () == -1){
 		std::cerr << "Error! Couldn't setup WiringPi.\n";
 		exit(1);
 	}
 	
 	/* Servos' pin settings */
+	pinMode(horizontal_servo_pin, SOFT_PWM_OUTPUT);
+	softPwmCreate(horizontal_servo_pin, 0, 100);
 	
-	pinMode(servo_h_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(servo_h_pin, 0, 100);
-	
-	pinMode(servo_v_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(servo_v_pin, 0, 100);
+	pinMode(vertical_servo_pin, SOFT_PWM_OUTPUT);
+	softPwmCreate(vertical_servo_pin, 0, 100);
 	
 	/* Set camera to default position */
-	
 	set_camera_to_default_position();
 	
 	/* Ultrasonic distance sensor settings */
-	
 	pinMode(trig_pin, OUTPUT);
 	pinMode(echo_pin, INPUT);
 	pullUpDnControl(echo_pin, PUD_DOWN);
@@ -107,35 +72,30 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 	delay(2000);
 	
 	/* Camera settings */
-	
-	camera.set(CV_CAP_PROP_FRAME_WIDTH, CAMERA_RESOLUTION_W);
-	camera.set(CV_CAP_PROP_FRAME_HEIGHT, CAMERA_RESOLUTION_H);
+	camera.set(CV_CAP_PROP_FRAME_WIDTH, camera_resolution_width);
+	camera.set(CV_CAP_PROP_FRAME_HEIGHT, camera_resolution_height);
 	if (!camera.open()){
 		std::cerr << "Error! Couldn't open the Camera.\n";
 		exit(2);
 	}
 	
 	/* Motors' pin settings */
-	
-	pinMode(MOTOR_R_F_PIN, OUTPUT);
-	pinMode(MOTOR_R_B_PIN, OUTPUT);
-	pinMode(MOTOR_L_F_PIN, OUTPUT);
-	pinMode(MOTOR_L_B_PIN, OUTPUT);
+	pinMode(right_motors_forward_pin, OUTPUT);
+	pinMode(right_motors_backward_pin, OUTPUT);
+	pinMode(left_motors_forward_pin, OUTPUT);
+	pinMode(left_motors_backward_pin, OUTPUT);
 	
 	/* Do not move */
-	
 	stop();
 	
 	/* Motors' pwm pin settings */
+	pinMode(right_motors_pwm_pin, SOFT_PWM_OUTPUT);
+	softPwmCreate(right_motors_pwm_pin,0,100);
 	
-	pinMode(MOTORS_R_PWM_PIN, SOFT_PWM_OUTPUT);
-	softPwmCreate(MOTORS_R_PWM_PIN,0,100);
-	
-	pinMode(MOTORS_L_PWM_PIN, SOFT_PWM_OUTPUT);
-	softPwmCreate(MOTORS_L_PWM_PIN,0,100);
+	pinMode(left_motors_pwm_pin, SOFT_PWM_OUTPUT);
+	softPwmCreate(left_motors_pwm_pin,0,100);
 	
 	/* Set the entered pwm value for motors */
-	
 	set_engine_power(engine_power);
 }
 
@@ -154,97 +114,96 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
  * 		degree value from default camera position
  * 
  */
-
 void PiCar::turn_camera(enum Camera direction, float degree)
 {
 	switch (direction) {
-		case Camera::Right :
-			if (degree < 4.5){
-				set_horizontal_servo_to_position(14);	/*	~0 degree	*/
-			} else if (degree >= 4.5 && degree < 13.5){
-				set_horizontal_servo_to_position(13);	/*	~9 degrees	*/
-			} else if (degree >= 13.5 && degree < 22.5){
-				set_horizontal_servo_to_position(12);	/*	~18 degrees	*/
-			} else if (degree >= 22.5 && degree < 31.5){
-				set_horizontal_servo_to_position(11);	/*	~27 degrees	*/
-			} else if (degree >= 31.5 && degree < 40.5){
-				set_horizontal_servo_to_position(10);	/*	~36 degrees	*/
-			} else if (degree >= 40.5 && degree < 49.5){
-				set_horizontal_servo_to_position(9);	/*	~45 degrees	*/
-			} else if (degree >= 49.5 && degree < 58.5){
-				set_horizontal_servo_to_position(8);	/*	~54 degrees	*/
-			} else if (degree >= 58.5 && degree < 67.5){
-				set_horizontal_servo_to_position(7);	/*	~63 degrees	*/
-			} else if (degree >= 67.5 && degree < 76.5){
-				set_horizontal_servo_to_position(6);	/*	~72 degrees	*/
-			} else if (degree >= 76.5 && degree < 85.5){
-				set_horizontal_servo_to_position(5);	/*	~81 degrees	*/
-			} else if (degree >= 85.5){
-				set_horizontal_servo_to_position(4);	/*	~90 degrees	*/
-			}
-			break;
-		case Camera::Left :
-			if (degree < 5){
-				set_horizontal_servo_to_position(14);	/*	~0 degree	*/
-			} else if (degree >= 5 && degree < 15){
-				set_horizontal_servo_to_position(15);	/*	~10 degrees	*/
-			} else if (degree >= 15 && degree < 25){
-				set_horizontal_servo_to_position(16);	/*	~20 degrees	*/
-			} else if (degree >= 25 && degree < 35){
-				set_horizontal_servo_to_position(17);	/*	~30 degrees	*/
-			} else if (degree >= 35 && degree < 45){
-				set_horizontal_servo_to_position(18);	/*	~40 degrees	*/
-			} else if (degree >= 45 && degree < 55){
-				set_horizontal_servo_to_position(19);	/*	~50 degrees	*/
-			} else if (degree >= 55 && degree < 65){
-				set_horizontal_servo_to_position(20);	/*	~60 degrees	*/
-			} else if (degree >= 65 && degree < 75){
-				set_horizontal_servo_to_position(21);	/*	~70 degrees	*/
-			} else if (degree >= 75 && degree < 85){
-				set_horizontal_servo_to_position(22);	/*	~80 degrees	*/
-			} else if (degree >= 85){	
-				set_horizontal_servo_to_position(23);	/*	~90 degrees	*/
-			}
-			break;
-		case Camera::Up :
-			if (degree < 5){
-				set_vertical_servo_to_position(15);	/*	~0 degrees	*/
-			} else if (degree >= 5 && degree < 15){
-				set_vertical_servo_to_position(14);	/*	~10 degrees	*/
-			} else if (degree >= 15 && degree < 25){
-				set_vertical_servo_to_position(13);	/*	~20 degrees	*/
-			} else if (degree >= 25 && degree < 35){
-				set_vertical_servo_to_position(12);	/*	~30 degrees	*/
-			} else if (degree >= 35 && degree < 45){
-				set_vertical_servo_to_position(11);	/*	~40 degrees	*/
-			} else if (degree >= 45 && degree < 55){
-				set_vertical_servo_to_position(10);	/*	~50 degrees	*/
-			} else if (degree >= 55 && degree < 65){
-				set_vertical_servo_to_position(9);	/*	~60 degrees	*/
-			} else if (degree >= 65 && degree < 75){
-				set_vertical_servo_to_position(8);	/*	~70 degrees	*/
-			} else if (degree >= 75 && degree < 85){
-				set_vertical_servo_to_position(7);	/*	~80 degrees	*/
-			}  else if (degree >= 85){
-				set_vertical_servo_to_position(6);	/*	~90 degrees	*/
-			}
-			break;
-		case Camera::Down :
-			if (degree < 3.75){
-				set_vertical_servo_to_position(15);	/*	~0 degree	*/
-			} else if (degree >= 3.57 && degree < 11.25){
-				set_vertical_servo_to_position(16);	/*	~7.5 degrees	*/
-			} else if (degree >= 11.25 && degree < 18.75){
-				set_vertical_servo_to_position(17);	/*	~15 degrees	*/
-			} else if (degree >= 18.75 && degree < 22.25){
-				set_vertical_servo_to_position(18);	/*	~22.5 degrees   */
-			}  else if (degree >= 22.25){
-				set_vertical_servo_to_position(19);	/*	~30 degrees	*/
-			}
-			break;
-		default: 
-			std::cout << "Invalid direction!\n";
-	}
+	case Camera::Right :
+		if (degree < 4.5){
+			set_horizontal_servo_to_position(14);	/*	~0 degree	*/
+		} else if (degree >= 4.5 && degree < 13.5){
+			set_horizontal_servo_to_position(13);	/*	~9 degrees	*/
+		} else if (degree >= 13.5 && degree < 22.5){
+			set_horizontal_servo_to_position(12);	/*	~18 degrees	*/
+		} else if (degree >= 22.5 && degree < 31.5){
+			set_horizontal_servo_to_position(11);	/*	~27 degrees	*/
+		} else if (degree >= 31.5 && degree < 40.5){
+			set_horizontal_servo_to_position(10);	/*	~36 degrees	*/
+		} else if (degree >= 40.5 && degree < 49.5){
+			set_horizontal_servo_to_position(9);	/*	~45 degrees	*/
+		} else if (degree >= 49.5 && degree < 58.5){
+			set_horizontal_servo_to_position(8);	/*	~54 degrees	*/
+		} else if (degree >= 58.5 && degree < 67.5){
+			set_horizontal_servo_to_position(7);	/*	~63 degrees	*/
+		} else if (degree >= 67.5 && degree < 76.5){
+			set_horizontal_servo_to_position(6);	/*	~72 degrees	*/
+		} else if (degree >= 76.5 && degree < 85.5){
+			set_horizontal_servo_to_position(5);	/*	~81 degrees	*/
+		} else if (degree >= 85.5){
+			set_horizontal_servo_to_position(4);	/*	~90 degrees	*/
+		}
+		break;
+	case Camera::Left :
+		if (degree < 5){
+			set_horizontal_servo_to_position(14);	/*	~0 degree	*/
+		} else if (degree >= 5 && degree < 15){
+			set_horizontal_servo_to_position(15);	/*	~10 degrees	*/
+		} else if (degree >= 15 && degree < 25){
+			set_horizontal_servo_to_position(16);	/*	~20 degrees	*/
+		} else if (degree >= 25 && degree < 35){
+			set_horizontal_servo_to_position(17);	/*	~30 degrees	*/
+		} else if (degree >= 35 && degree < 45){
+			set_horizontal_servo_to_position(18);	/*	~40 degrees	*/
+		} else if (degree >= 45 && degree < 55){
+			set_horizontal_servo_to_position(19);	/*	~50 degrees	*/
+		} else if (degree >= 55 && degree < 65){
+			set_horizontal_servo_to_position(20);	/*	~60 degrees	*/
+		} else if (degree >= 65 && degree < 75){
+			set_horizontal_servo_to_position(21);	/*	~70 degrees	*/
+		} else if (degree >= 75 && degree < 85){
+			set_horizontal_servo_to_position(22);	/*	~80 degrees	*/
+		} else if (degree >= 85){	
+			set_horizontal_servo_to_position(23);	/*	~90 degrees	*/
+		}
+		break;
+	case Camera::Up :
+		if (degree < 5){
+			set_vertical_servo_to_position(15);	/*	~0 degrees	*/
+		} else if (degree >= 5 && degree < 15){
+			set_vertical_servo_to_position(14);	/*	~10 degrees	*/
+		} else if (degree >= 15 && degree < 25){
+			set_vertical_servo_to_position(13);	/*	~20 degrees	*/
+		} else if (degree >= 25 && degree < 35){
+			set_vertical_servo_to_position(12);	/*	~30 degrees	*/
+		} else if (degree >= 35 && degree < 45){
+			set_vertical_servo_to_position(11);	/*	~40 degrees	*/
+		} else if (degree >= 45 && degree < 55){
+			set_vertical_servo_to_position(10);	/*	~50 degrees	*/
+		} else if (degree >= 55 && degree < 65){
+			set_vertical_servo_to_position(9);	/*	~60 degrees	*/
+		} else if (degree >= 65 && degree < 75){
+			set_vertical_servo_to_position(8);	/*	~70 degrees	*/
+		} else if (degree >= 75 && degree < 85){
+			set_vertical_servo_to_position(7);	/*	~80 degrees	*/
+		}  else if (degree >= 85){
+			set_vertical_servo_to_position(6);	/*	~90 degrees	*/
+		}
+		break;
+	case Camera::Down :
+		if (degree < 3.75){
+			set_vertical_servo_to_position(15);	/*	~0 degree	*/
+		} else if (degree >= 3.57 && degree < 11.25){
+			set_vertical_servo_to_position(16);	/*	~7.5 degrees	*/
+		} else if (degree >= 11.25 && degree < 18.75){
+			set_vertical_servo_to_position(17);	/*	~15 degrees	*/
+		} else if (degree >= 18.75 && degree < 22.25){
+			set_vertical_servo_to_position(18);	/*	~22.5 degrees   */
+		}  else if (degree >= 22.25){
+			set_vertical_servo_to_position(19);	/*	~30 degrees	*/
+		}
+		break;
+	default: 
+		std::cout << "Invalid direction!\n";
+	
 }
 
 /* 
@@ -256,18 +215,17 @@ void PiCar::turn_camera(enum Camera direction, float degree)
  * ->pos_h
  * 		pwm value of the position
  */
- 
 void PiCar::set_horizontal_servo_to_position(int pos_h)
 {
-	if (pos_h <= VERTICAL_SERVO_MAX_POS_R){
-		pos_h = VERTICAL_SERVO_MAX_POS_R;
+	if (pos_h <= vertical_servo_max_pos_right){
+		pos_h = vertical_servo_max_pos_right;
 	}
-	if (pos_h >= VERTICAL_SERVO_MAX_POS_L){
-		pos_h = VERTICAL_SERVO_MAX_POS_L;
+	if (pos_h >= vertical_servo_max_pos_left){
+		pos_h = vertical_servo_max_pos_left;
 	}
-	softPwmWrite(servo_h_pin, pos_h);
-	delay(250);
-	softPwmWrite(servo_h_pin, 0);
+	softPwmWrite(horizontal_servo_pin, pos_h);
+	delay(50);
+	softPwmWrite(horizontal_servo_pin, 0);
 	delay(50);
 }
 
@@ -280,18 +238,17 @@ void PiCar::set_horizontal_servo_to_position(int pos_h)
  * ->pos_v
  * 		pwm value of the position
  */
-
 void PiCar::set_vertical_servo_to_position(int pos_v)
 {
-	if (pos_v <= HORIZONTAL_SERVO_MAX_POS_U){
-		pos_v = HORIZONTAL_SERVO_MAX_POS_U;
+	if (pos_v <= horizontal_servo_max_pos_up){
+		pos_v = horizontal_servo_max_pos_up;
 	}
-	if (pos_v >= HORIZONTAL_SERVO_MAX_POS_D){
-		pos_v = HORIZONTAL_SERVO_MAX_POS_D;
+	if (pos_v >= horizontal_servo_max_pos_down){
+		pos_v = horizontal_servo_max_pos_down;
 	}
-	softPwmWrite(servo_v_pin, pos_v);
-	delay(250);
-	softPwmWrite(servo_v_pin, 0);
+	softPwmWrite(vertical_servo_pin, pos_v);
+	delay(50);
+	softPwmWrite(vertical_servo_pin, 0);
 	delay(50);
 }
 
@@ -301,11 +258,10 @@ void PiCar::set_vertical_servo_to_position(int pos_v)
  * This function turns the camera to the default position.
  * 
  */
-
 void PiCar::set_camera_to_default_position(void)
 {
-	set_horizontal_servo_to_position(DEFAULT_HORIZONTAL_SERVO_POS);
-	set_vertical_servo_to_position(DEFAULT_VERTICAL_SERVO_POS);
+	set_horizontal_servo_to_position(horizontal_servo_default_pos);
+	set_vertical_servo_to_position(vertical_servo_default_pos);
 }
 
 /* 
@@ -327,7 +283,6 @@ void PiCar::set_camera_to_default_position(void)
  * -> distance in cantimeters
  * 
  */
-
 int PiCar::get_distance_from_obstacle(void) const
 {
 	digitalWrite(trig_pin, HIGH);
@@ -339,7 +294,7 @@ int PiCar::get_distance_from_obstacle(void) const
 	auto end = std::chrono::steady_clock::now();
 	std::chrono::duration<double>timeInterval = end - start;
 	int distance = static_cast<int>((timeInterval.count() / 58) * 1000000);
-	delay(150);
+	delayMicroseconds(150);
 	if (distance < 0){
 		return -1;
 	}
@@ -352,15 +307,14 @@ int PiCar::get_distance_from_obstacle(void) const
  * This function stops PiCar.
  * 
  */
-
 void PiCar::stop(void)
 {
-	digitalWrite(MOTOR_R_F_PIN, LOW);
-	digitalWrite(MOTOR_R_B_PIN, LOW);
-	digitalWrite(MOTOR_L_F_PIN, LOW);
-	digitalWrite(MOTOR_L_B_PIN, LOW);
+	digitalWrite(right_motors_forward_pin, LOW);
+	digitalWrite(right_motors_backward_pin, LOW);
+	digitalWrite(left_motors_forward_pin, LOW);
+	digitalWrite(left_motors_backward_pin, LOW);
 }
-
+	
 /* 
  * set_engine_power  
  * 
@@ -371,7 +325,6 @@ void PiCar::stop(void)
  * 		pwm range (0 <= power <= 100)
  * 
  */
-
 void PiCar::set_engine_power(int power)
 {
 	if (power >= 100){
@@ -380,8 +333,8 @@ void PiCar::set_engine_power(int power)
 	if (power <= 0){
 		power = 0;
 	}
-	softPwmWrite(MOTORS_R_PWM_PIN, power);
-	softPwmWrite(MOTORS_L_PWM_PIN, power);
+	softPwmWrite(right_motors_pwm_pin, power);
+	softPwmWrite(left_motors_pwm_pin, power);
 }
 
 /* 
@@ -394,7 +347,6 @@ void PiCar::set_engine_power(int power)
  * 		pwm increment value
  * 
  */
-
 void PiCar::increase_power_by(int increment)
 {
 	engine_power += increment;
@@ -411,7 +363,6 @@ void PiCar::increase_power_by(int increment)
  * 		pwm decrement value
  * 
  */
-
 void PiCar::decrease_power_by(int decrement)
 {
 	engine_power -= decrement;
@@ -424,29 +375,28 @@ void PiCar::decrease_power_by(int decrement)
  * This function drives PiCar forward.
  * 
  */
-
 void PiCar::go_forward(void)
 {
-	digitalWrite(MOTOR_R_F_PIN, HIGH);
-	digitalWrite(MOTOR_R_B_PIN, LOW);
-	digitalWrite(MOTOR_L_F_PIN, HIGH);
-	digitalWrite(MOTOR_L_B_PIN, LOW);
+	digitalWrite(right_motors_forward_pin, HIGH);
+	digitalWrite(right_motors_backward_pin, LOW);
+	digitalWrite(left_motors_forward_pin, HIGH);
+	digitalWrite(left_motors_backward_pin, LOW);
 }
-
+ 
 /* 
  * go_backward  
  * 
  * This function drives PiCar backward.
  * 
  */
-
 void PiCar::go_backward(void)
 {
-	digitalWrite(MOTOR_R_F_PIN, LOW);
-	digitalWrite(MOTOR_R_B_PIN, HIGH);
-	digitalWrite(MOTOR_L_F_PIN, LOW);
-	digitalWrite(MOTOR_L_B_PIN, HIGH);
+	digitalWrite(right_motors_forward_pin, LOW);
+	digitalWrite(right_motors_backward_pin, HIGH);
+	digitalWrite(left_motors_forward_pin, LOW);
+	digitalWrite(left_motors_backward_pin, HIGH);
 }
+
 
 /* 
  * turn_car  
@@ -469,35 +419,34 @@ void PiCar::go_backward(void)
  * is not supported by PiCar control library for now.
  * 
  */
-
 void PiCar::turn_car(enum Car direction)
 {
 	switch (direction) {
-		case Car::Turn_Right_Forward :
-			digitalWrite(MOTOR_R_F_PIN, LOW);
-			digitalWrite(MOTOR_R_B_PIN, LOW);
-			digitalWrite(MOTOR_L_F_PIN, HIGH);
-			digitalWrite(MOTOR_L_B_PIN, LOW);
-			break;
-		case Car::Turn_Left_Forward :
-			digitalWrite(MOTOR_R_F_PIN, HIGH);
-			digitalWrite(MOTOR_R_B_PIN, LOW);
-			digitalWrite(MOTOR_L_F_PIN, LOW);
-			digitalWrite(MOTOR_L_B_PIN, LOW);
-			break;
-		case Car::Turn_Right_Backward :
-			digitalWrite(MOTOR_R_F_PIN, LOW);
-			digitalWrite(MOTOR_R_B_PIN, LOW);
-			digitalWrite(MOTOR_L_F_PIN, LOW);
-			digitalWrite(MOTOR_L_B_PIN, HIGH);
-			break;
-		case Car::Turn_Left_Backward :
-			digitalWrite(MOTOR_R_F_PIN, LOW);
-			digitalWrite(MOTOR_R_B_PIN, HIGH);
-			digitalWrite(MOTOR_L_F_PIN, LOW);
-			digitalWrite(MOTOR_L_B_PIN, LOW);
-			break;
-		default:
-			std::cout << "Invalid direction!\n";
+	case Car::Turn_Right_Forward :
+		digitalWrite(right_motors_forward_pin, LOW);
+		digitalWrite(right_motors_backward_pin, LOW);
+		digitalWrite(left_motors_forward_pin, HIGH);
+		digitalWrite(left_motors_backward_pin, LOW);
+		break;
+	case Car::Turn_Left_Forward :
+		digitalWrite(right_motors_forward_pin, HIGH);
+		digitalWrite(right_motors_backward_pin, LOW);
+		digitalWrite(left_motors_forward_pin, LOW);
+		digitalWrite(left_motors_backward_pin, LOW);
+		break;
+	case Car::Turn_Right_Backward :
+		digitalWrite(right_motors_forward_pin, LOW);
+		digitalWrite(right_motors_backward_pin, LOW);
+		digitalWrite(left_motors_forward_pin, LOW);
+		digitalWrite(left_motors_backward_pin, HIGH);
+		break;
+	case Car::Turn_Left_Backward :
+		digitalWrite(right_motors_forward_pin, LOW);
+		digitalWrite(right_motors_backward_pin, HIGH);
+		digitalWrite(left_motors_forward_pin, LOW);
+		digitalWrite(left_motors_backward_pin, LOW);
+		break;
+	default:
+		std::cout << "Invalid direction!\n";
 	}
 }
