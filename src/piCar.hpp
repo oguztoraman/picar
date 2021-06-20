@@ -24,15 +24,12 @@
 #define PICAR_H
 
 /*  Camera directions  */
-
 enum class Camera{ Right, Left, Up, Down };
 
 /*  Driving directions  */
-
 enum class Car{ Turn_Right_Forward, Turn_Right_Backward, Turn_Left_Forward, Turn_Left_Backward };
 
 /* PiCar class */
-
 class PiCar {
 public:
 	cv::Mat camera_input;
@@ -61,13 +58,37 @@ public:
 	
 private:
 	int engine_power;
-	int servo_v_pin;
-	int servo_h_pin;
+	int vertical_servo_pin;
+	int horizontal_servo_pin;
 	int trig_pin;
 	int echo_pin;
 	
 	void set_vertical_servo_to_position(int pos_v);
 	void set_horizontal_servo_to_position(int pos_h);
+	
+	/* Pwm pins (wiringPi) of right and left motors (from motor driver) */
+	static constexpr int right_motors_pwm_pin = 26;
+	static constexpr int left_motors_pwm_pin  = 25;
+	
+	/* Control pins (wiringPi) of right and left motors (from motor driver) */
+	static constexpr int right_motors_forward_pin  = 22;
+	static constexpr int right_motors_backward_pin = 23;
+	static constexpr int left_motors_forward_pin   = 29;
+	static constexpr int left_motors_backward_pin  = 28;
+	
+	/* Camera resolution */
+	static constexpr int camera_resolution_width  = 720;
+	static constexpr int camera_resolution_height = 720;
+	
+	/* Servos' default positions */
+	static constexpr int vertical_servo_default_pos   = 15;
+	static constexpr int horizontal_servo_default_pos = 14;
+	
+	/* Servos' rotation limits */
+	static constexpr int vertical_servo_max_pos_right  = 4;
+	static constexpr int vertical_servo_max_pos_left   = 23;
+	static constexpr int horizontal_servo_max_pos_up   = 6;
+	static constexpr int horizontal_servo_max_pos_down = 19;
 };
 
 #endif /* PICAR_H */
