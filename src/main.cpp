@@ -28,7 +28,7 @@
 #include <raspicam/raspicam_cv.h>
 #include <thread>
 
-#include "piCar.hpp"
+#include "../inc/piCar.hpp"
 
 /* Setup the car with default control pins and engine power */
 PiCar car;
