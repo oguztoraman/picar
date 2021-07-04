@@ -27,7 +27,7 @@
 #include <opencv2/opencv.hpp>
 #include <raspicam/raspicam_cv.h>
 
-#include "piCar.hpp"
+#include "../inc/piCar.hpp"
 
 /* Definitions of PiCar class member functions */
 
