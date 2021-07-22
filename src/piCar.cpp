@@ -203,7 +203,7 @@ void PiCar::turn_camera(enum Camera direction, float degree)
 		break;
 	default: 
 		std::cout << "Invalid direction!\n";
-	
+	}
 }
 
 /* 
