@@ -41,7 +41,7 @@ public:
 	PiCar& operator=(const PiCar& other) = delete;
 	
 	void set_camera_to_default_position(void);
-	void turn_camera(enum Camera direction, float degree);
+	void turn_camera(Camera direction, float degree);
 	
 	int get_distance_from_obstacle(void) const;
 	
@@ -50,7 +50,7 @@ public:
 	void go_forward(void);
 	void go_backward(void);
 	
-	void turn_car(enum Car direction);
+	void turn_car(Car direction);
 	
 	void set_engine_power(int power);
 	void increase_power_by(int increment);
