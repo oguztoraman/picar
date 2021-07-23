@@ -114,7 +114,7 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
  * 		degree value from default camera position
  * 
  */
-void PiCar::turn_camera(enum Camera direction, float degree)
+void PiCar::turn_camera(Camera direction, float degree)
 {
 	switch (direction) {
 	case Camera::Right :
@@ -419,7 +419,7 @@ void PiCar::go_backward(void)
  * is not supported by PiCar control library for now.
  * 
  */
-void PiCar::turn_car(enum Car direction)
+void PiCar::turn_car(Car direction)
 {
 	switch (direction) {
 	case Car::Turn_Right_Forward :
