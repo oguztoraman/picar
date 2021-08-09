@@ -454,5 +454,5 @@ void PiCar::turn_car(Car direction)
 	}
 }
 	
-}
+}  /* RaspberryPi namespace */
 
