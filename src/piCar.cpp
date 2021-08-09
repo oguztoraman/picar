@@ -46,7 +46,8 @@
  * -> ECHO    = 1
  *
  */
-PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, vertical_servo_pin{servo_v}, horizontal_servo_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
+PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, 
+	vertical_servo_pin{servo_v}, horizontal_servo_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
 {
 	/* WiringPi setup */
 	if (wiringPiSetup () == -1){
