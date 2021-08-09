@@ -23,6 +23,8 @@
 #ifndef PICAR_H
 #define PICAR_H
 
+namespace RaspberryPi {
+
 /*  Camera directions  */
 enum class Camera{ Right, Left, Up, Down };
 
@@ -90,5 +92,7 @@ private:
 	static constexpr int horizontal_servo_max_pos_up   = 6;
 	static constexpr int horizontal_servo_max_pos_down = 19;
 };
+
+}
 
 #endif /* PICAR_H */
