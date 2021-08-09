@@ -29,6 +29,8 @@
 
 #include "../inc/piCar.hpp"
 
+namespace RaspberryPi {
+
 /* Definitions of PiCar class member functions */
 
 /*
@@ -451,3 +453,6 @@ void PiCar::turn_car(Car direction)
 		std::cout << "Invalid direction!\n";
 	}
 }
+	
+}
+
