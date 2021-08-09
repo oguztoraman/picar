@@ -93,6 +93,6 @@ private:
 	static constexpr int horizontal_servo_max_pos_down = 19;
 };
 
-}
+}  /* RaspberryPi namespace */
 
 #endif /* PICAR_H */
