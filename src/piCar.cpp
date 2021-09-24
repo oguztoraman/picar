@@ -48,8 +48,8 @@ namespace RaspberryPi {
  * -> ECHO    = 1
  *
  */
-PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, 
-	vertical_servo_pin{servo_v}, horizontal_servo_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
+PiCar::PiCar(int _power, int _servo_v, int _servo_h, int _trig, int _echo): engine_power{_power}, 
+	vertical_servo_pin{_servo_v}, horizontal_servo_pin{_servo_h}, trig_pin{_trig}, echo_pin{_echo}
 {
 	/* WiringPi setup */
 	if (wiringPiSetup () == -1){
@@ -102,6 +102,28 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 	set_engine_power(engine_power);
 }
 
+
+/*
+ * build_PiCar
+ * 
+ * This function implements Meyer’s Singleton.
+ *
+ * Default engine power;
+ * -> POWER   = 50
+ *
+ * Default control pins(wiringPi);
+ * -> SERVO_V = 0
+ * -> SERVO_H = 3
+ * -> TRIG    = 6
+ * -> ECHO    = 1
+ *
+ */
+Picar& Picar::build_PiCar(int _power, int _servo_v, int _servo_h, int _trig, int _echo)
+{
+	static car{_power, _servo_v, _servo_h, _trig, _echo};
+	return car;
+}
+
 /* 
  * turn_camera  
  * 
@@ -117,90 +139,90 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
  * 		degree value from default camera position
  * 
  */
-void PiCar::turn_camera(const Camera& direction, float degree)
+void PiCar::turn_camera(const Camera& _direction, float _degree)
 {
-	switch (direction) {
+	switch (_direction) {
 	case Camera::Right :
 		if (degree < 4.5){
 			set_horizontal_servo_to_position(14);	/*	~0 degree	*/
-		} else if (degree >= 4.5 && degree < 13.5){
+		} else if (_degree >= 4.5 && _degree < 13.5){
 			set_horizontal_servo_to_position(13);	/*	~9 degrees	*/
-		} else if (degree >= 13.5 && degree < 22.5){
+		} else if (_degree >= 13.5 && _degree < 22.5){
 			set_horizontal_servo_to_position(12);	/*	~18 degrees	*/
-		} else if (degree >= 22.5 && degree < 31.5){
+		} else if (_degree >= 22.5 && _degree < 31.5){
 			set_horizontal_servo_to_position(11);	/*	~27 degrees	*/
-		} else if (degree >= 31.5 && degree < 40.5){
+		} else if (_degree >= 31.5 && _degree < 40.5){
 			set_horizontal_servo_to_position(10);	/*	~36 degrees	*/
-		} else if (degree >= 40.5 && degree < 49.5){
+		} else if (_degree >= 40.5 && _degree < 49.5){
 			set_horizontal_servo_to_position(9);	/*	~45 degrees	*/
-		} else if (degree >= 49.5 && degree < 58.5){
+		} else if (_degree >= 49.5 && _degree < 58.5){
 			set_horizontal_servo_to_position(8);	/*	~54 degrees	*/
-		} else if (degree >= 58.5 && degree < 67.5){
+		} else if (_degree >= 58.5 && _degree < 67.5){
 			set_horizontal_servo_to_position(7);	/*	~63 degrees	*/
-		} else if (degree >= 67.5 && degree < 76.5){
+		} else if (_degree >= 67.5 && _degree < 76.5){
 			set_horizontal_servo_to_position(6);	/*	~72 degrees	*/
-		} else if (degree >= 76.5 && degree < 85.5){
+		} else if (_degree >= 76.5 && _degree < 85.5){
 			set_horizontal_servo_to_position(5);	/*	~81 degrees	*/
-		} else if (degree >= 85.5){
+		} else if (_degree >= 85.5){
 			set_horizontal_servo_to_position(4);	/*	~90 degrees	*/
 		}
 		break;
 	case Camera::Left :
-		if (degree < 5){
+		if (_degree < 5){
 			set_horizontal_servo_to_position(14);	/*	~0 degree	*/
-		} else if (degree >= 5 && degree < 15){
+		} else if (_degree >= 5 && _degree < 15){
 			set_horizontal_servo_to_position(15);	/*	~10 degrees	*/
-		} else if (degree >= 15 && degree < 25){
+		} else if (_degree >= 15 && _degree < 25){
 			set_horizontal_servo_to_position(16);	/*	~20 degrees	*/
-		} else if (degree >= 25 && degree < 35){
+		} else if (_degree >= 25 && _degree < 35){
 			set_horizontal_servo_to_position(17);	/*	~30 degrees	*/
-		} else if (degree >= 35 && degree < 45){
+		} else if (_degree >= 35 && _degree < 45){
 			set_horizontal_servo_to_position(18);	/*	~40 degrees	*/
-		} else if (degree >= 45 && degree < 55){
+		} else if (_degree >= 45 && _degree < 55){
 			set_horizontal_servo_to_position(19);	/*	~50 degrees	*/
-		} else if (degree >= 55 && degree < 65){
+		} else if (_degree >= 55 && _degree < 65){
 			set_horizontal_servo_to_position(20);	/*	~60 degrees	*/
-		} else if (degree >= 65 && degree < 75){
+		} else if (_degree >= 65 && _degree < 75){
 			set_horizontal_servo_to_position(21);	/*	~70 degrees	*/
-		} else if (degree >= 75 && degree < 85){
+		} else if (_degree >= 75 && _degree < 85){
 			set_horizontal_servo_to_position(22);	/*	~80 degrees	*/
-		} else if (degree >= 85){	
+		} else if (_degree >= 85){	
 			set_horizontal_servo_to_position(23);	/*	~90 degrees	*/
 		}
 		break;
 	case Camera::Up :
-		if (degree < 5){
+		if (_degree < 5){
 			set_vertical_servo_to_position(15);	/*	~0 degrees	*/
-		} else if (degree >= 5 && degree < 15){
+		} else if (_degree >= 5 && _degree < 15){
 			set_vertical_servo_to_position(14);	/*	~10 degrees	*/
-		} else if (degree >= 15 && degree < 25){
+		} else if (_degree >= 15 && _degree < 25){
 			set_vertical_servo_to_position(13);	/*	~20 degrees	*/
-		} else if (degree >= 25 && degree < 35){
+		} else if (_degree >= 25 && _degree < 35){
 			set_vertical_servo_to_position(12);	/*	~30 degrees	*/
-		} else if (degree >= 35 && degree < 45){
+		} else if (_degree >= 35 && _degree < 45){
 			set_vertical_servo_to_position(11);	/*	~40 degrees	*/
-		} else if (degree >= 45 && degree < 55){
+		} else if (_degree >= 45 && _degree < 55){
 			set_vertical_servo_to_position(10);	/*	~50 degrees	*/
-		} else if (degree >= 55 && degree < 65){
+		} else if (_degree >= 55 && _degree < 65){
 			set_vertical_servo_to_position(9);	/*	~60 degrees	*/
-		} else if (degree >= 65 && degree < 75){
+		} else if (_degree >= 65 && _degree < 75){
 			set_vertical_servo_to_position(8);	/*	~70 degrees	*/
-		} else if (degree >= 75 && degree < 85){
+		} else if (_degree >= 75 && _degree < 85){
 			set_vertical_servo_to_position(7);	/*	~80 degrees	*/
-		}  else if (degree >= 85){
+		}  else if (_degree >= 85){
 			set_vertical_servo_to_position(6);	/*	~90 degrees	*/
 		}
 		break;
 	case Camera::Down :
-		if (degree < 3.75){
+		if (_degree < 3.75){
 			set_vertical_servo_to_position(15);	/*	~0 degree	*/
-		} else if (degree >= 3.57 && degree < 11.25){
+		} else if (_degree >= 3.57 && _degree < 11.25){
 			set_vertical_servo_to_position(16);	/*	~7.5 degrees	*/
-		} else if (degree >= 11.25 && degree < 18.75){
+		} else if (_degree >= 11.25 && _degree < 18.75){
 			set_vertical_servo_to_position(17);	/*	~15 degrees	*/
-		} else if (degree >= 18.75 && degree < 22.25){
+		} else if (_degree >= 18.75 && _degree < 22.25){
 			set_vertical_servo_to_position(18);	/*	~22.5 degrees   */
-		}  else if (degree >= 22.25){
+		}  else if (_degree >= 22.25){
 			set_vertical_servo_to_position(19);	/*	~30 degrees	*/
 		}
 		break;
@@ -218,15 +240,15 @@ void PiCar::turn_camera(const Camera& direction, float degree)
  * ->pos_h
  * 		pwm value of the position
  */
-void PiCar::set_horizontal_servo_to_position(int pos_h)
+void PiCar::set_horizontal_servo_to_position(int _pos_h)
 {
-	if (pos_h <= vertical_servo_max_pos_right){
-		pos_h = vertical_servo_max_pos_right;
+	if (_pos_h <= vertical_servo_max_pos_right){
+		_pos_h = vertical_servo_max_pos_right;
 	}
-	if (pos_h >= vertical_servo_max_pos_left){
-		pos_h = vertical_servo_max_pos_left;
+	if (_pos_h >= vertical_servo_max_pos_left){
+		_pos_h = vertical_servo_max_pos_left;
 	}
-	softPwmWrite(horizontal_servo_pin, pos_h);
+	softPwmWrite(horizontal_servo_pin, _pos_h);
 	delay(50);
 	softPwmWrite(horizontal_servo_pin, 0);
 	delay(50);
@@ -241,15 +263,15 @@ void PiCar::set_horizontal_servo_to_position(int pos_h)
  * ->pos_v
  * 		pwm value of the position
  */
-void PiCar::set_vertical_servo_to_position(int pos_v)
+void PiCar::set_vertical_servo_to_position(int _pos_v)
 {
-	if (pos_v <= horizontal_servo_max_pos_up){
-		pos_v = horizontal_servo_max_pos_up;
+	if (_pos_v <= horizontal_servo_max_pos_up){
+		_pos_v = horizontal_servo_max_pos_up;
 	}
-	if (pos_v >= horizontal_servo_max_pos_down){
-		pos_v = horizontal_servo_max_pos_down;
+	if (_pos_v >= horizontal_servo_max_pos_down){
+		_pos_v = horizontal_servo_max_pos_down;
 	}
-	softPwmWrite(vertical_servo_pin, pos_v);
+	softPwmWrite(vertical_servo_pin, _pos_v);
 	delay(50);
 	softPwmWrite(vertical_servo_pin, 0);
 	delay(50);
@@ -310,7 +332,7 @@ int PiCar::get_distance_from_obstacle() const
  * This function stops PiCar.
  * 
  */
-void PiCar::stop(void)
+void PiCar::stop()
 {
 	digitalWrite(right_motors_forward_pin, LOW);
 	digitalWrite(right_motors_backward_pin, LOW);
@@ -328,16 +350,16 @@ void PiCar::stop(void)
  * 		pwm range (0 <= power <= 100)
  * 
  */
-void PiCar::set_engine_power(int power)
+void PiCar::set_engine_power(int _power)
 {
-	if (power >= 100){
-		power = 100;
+	if (_power >= 100){
+		_power = 100;
 	}
-	if (power <= 0){
-		power = 0;
+	if (_power <= 0){
+		_power = 0;
 	}
-	softPwmWrite(right_motors_pwm_pin, power);
-	softPwmWrite(left_motors_pwm_pin, power);
+	softPwmWrite(right_motors_pwm_pin, _power);
+	softPwmWrite(left_motors_pwm_pin, _power);
 }
 
 /* 
@@ -350,9 +372,9 @@ void PiCar::set_engine_power(int power)
  * 		pwm increment value
  * 
  */
-void PiCar::increase_power_by(int increment)
+void PiCar::increase_power_by(int _increment)
 {
-	engine_power += increment;
+	engine_power += _increment;
 	set_engine_power(engine_power);
 }
 
@@ -366,9 +388,9 @@ void PiCar::increase_power_by(int increment)
  * 		pwm decrement value
  * 
  */
-void PiCar::decrease_power_by(int decrement)
+void PiCar::decrease_power_by(int _decrement)
 {
-	engine_power -= decrement;
+	engine_power -= _decrement;
 	set_engine_power(engine_power);
 }
 
@@ -422,9 +444,9 @@ void PiCar::go_backward()
  * is not supported by PiCar control library for now.
  * 
  */
-void PiCar::turn_car(const Car& direction)
+void PiCar::turn_car(const Car& _direction)
 {
-	switch (direction) {
+	switch (_direction) {
 	case Car::Turn_Right_Forward :
 		digitalWrite(right_motors_forward_pin, LOW);
 		digitalWrite(right_motors_backward_pin, LOW);
