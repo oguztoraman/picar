@@ -118,9 +118,9 @@ PiCar::PiCar(int _power, int _servo_v, int _servo_h, int _trig, int _echo): engi
  * -> ECHO    = 1
  *
  */
-Picar& Picar::build_PiCar(int _power, int _servo_v, int _servo_h, int _trig, int _echo)
+PiCar& PiCar::build_PiCar(int _power, int _servo_v, int _servo_h, int _trig, int _echo)
 {
-	static car{_power, _servo_v, _servo_h, _trig, _echo};
+	static PiCar car{_power, _servo_v, _servo_h, _trig, _echo};
 	return car;
 }
 
