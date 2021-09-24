@@ -37,7 +37,7 @@ public:
 	cv::Mat camera_input;
 	raspicam::RaspiCam_Cv camera;
 	
-	static Picar& build_PiCar(int _power = 50, int _servo_v = 0, int _servo_h = 3, int _trig = 6, int _echo = 1);
+	static PiCar& build_PiCar(int _power = 50, int _servo_v = 0, int _servo_h = 3, int _trig = 6, int _echo = 1);
 	
 	PiCar(const PiCar&) = delete;
 	PiCar& operator=(const PiCar&) = delete;
