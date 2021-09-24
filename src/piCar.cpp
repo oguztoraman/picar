@@ -93,10 +93,10 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 	
 	/* Motors' pwm pin settings */
 	pinMode(right_motors_pwm_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(right_motors_pwm_pin,0,100);
+	softPwmCreate(right_motors_pwm_pin, 0, 100);
 	
 	pinMode(left_motors_pwm_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(left_motors_pwm_pin,0,100);
+	softPwmCreate(left_motors_pwm_pin, 0, 100);
 	
 	/* Set the entered pwm value for motors */
 	set_engine_power(engine_power);
@@ -117,7 +117,7 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
  * 		degree value from default camera position
  * 
  */
-void PiCar::turn_camera(Camera direction, float degree)
+void PiCar::turn_camera(const Camera& direction, float degree)
 {
 	switch (direction) {
 	case Camera::Right :
@@ -261,7 +261,7 @@ void PiCar::set_vertical_servo_to_position(int pos_v)
  * This function turns the camera to the default position.
  * 
  */
-void PiCar::set_camera_to_default_position(void)
+void PiCar::set_camera_to_default_position()
 {
 	set_horizontal_servo_to_position(horizontal_servo_default_pos);
 	set_vertical_servo_to_position(vertical_servo_default_pos);
@@ -286,7 +286,7 @@ void PiCar::set_camera_to_default_position(void)
  * -> distance in cantimeters
  * 
  */
-int PiCar::get_distance_from_obstacle(void) const
+int PiCar::get_distance_from_obstacle() const
 {
 	digitalWrite(trig_pin, HIGH);
 	delayMicroseconds(10);
@@ -378,7 +378,7 @@ void PiCar::decrease_power_by(int decrement)
  * This function drives PiCar forward.
  * 
  */
-void PiCar::go_forward(void)
+void PiCar::go_forward()
 {
 	digitalWrite(right_motors_forward_pin, HIGH);
 	digitalWrite(right_motors_backward_pin, LOW);
@@ -392,7 +392,7 @@ void PiCar::go_forward(void)
  * This function drives PiCar backward.
  * 
  */
-void PiCar::go_backward(void)
+void PiCar::go_backward()
 {
 	digitalWrite(right_motors_forward_pin, LOW);
 	digitalWrite(right_motors_backward_pin, HIGH);
@@ -422,7 +422,7 @@ void PiCar::go_backward(void)
  * is not supported by PiCar control library for now.
  * 
  */
-void PiCar::turn_car(Car direction)
+void PiCar::turn_car(const Car& direction)
 {
 	switch (direction) {
 	case Car::Turn_Right_Forward :
