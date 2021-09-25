@@ -31,7 +31,7 @@
 #include "../inc/piCar.hpp"
 
 /* Setup the car with default control pins and engine power */
-RaspberryPi::PiCar::build_PiCar car;
+auto car{RaspberryPi::PiCar::build_PiCar()};
 
 /* Your autonomous driving test code */
 int main()
