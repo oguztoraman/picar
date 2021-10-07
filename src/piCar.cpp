@@ -34,18 +34,9 @@ namespace RaspberryPi {
 /* Definitions of PiCar class member functions */
 
 /*
- * default constructor
+ * constructor
  * 
- * This function sets the necessary initial settings for PiCar with desired/default control pins and engine power.
- *
- * Default engine power;
- * -> POWER   = 50
- *
- * Default control pins(wiringPi);
- * -> SERVO_V = 0
- * -> SERVO_H = 3
- * -> TRIG    = 6
- * -> ECHO    = 1
+ * This function sets the necessary initial settings for PiCar with desired control pins and engine power.
  *
  */
 PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_power{power}, 
