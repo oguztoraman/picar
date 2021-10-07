@@ -37,13 +37,13 @@ public:
 	cv::Mat camera_input;
 	raspicam::RaspiCam_Cv camera;
 	
-	static PiCar& build_PiCar(int _power = 50, int _servo_v = 0, int _servo_h = 3, int _trig = 6, int _echo = 1);
+	static PiCar& build_PiCar(int power = 50, int servo_v = 0, int servo_h = 3, int trig = 6, int echo = 1);
 	
 	PiCar(const PiCar&) = delete;
 	PiCar& operator=(const PiCar&) = delete;
 	
 	void set_camera_to_default_position();
-	void turn_camera(const Camera& _direction, float _degree);
+	void turn_camera(const Camera& direction, float degree);
 	
 	int get_distance_from_obstacle() const;
 	
@@ -52,11 +52,11 @@ public:
 	void go_forward();
 	void go_backward();
 	
-	void turn_car(const Car& _direction);
+	void turn_car(const Car& direction);
 	
-	void set_engine_power(int _power);
-	void increase_power_by(int _increment);
-	void decrease_power_by(int _decrement);
+	void set_engine_power(int power);
+	void increase_power_by(int increment);
+	void decrease_power_by(int decrement);
 	
 private:
 	int engine_power;
@@ -65,10 +65,10 @@ private:
 	int trig_pin;
 	int echo_pin;
 	
-	void set_vertical_servo_to_position(int _pos_v);
-	void set_horizontal_servo_to_position(int _pos_h);
+	void set_vertical_servo_to_position(int pos_v);
+	void set_horizontal_servo_to_position(int pos_h);
 	
-	PiCar(int _power = 50, int _servo_v = 0, int _servo_h = 3, int _trig = 6, int _echo = 1);
+	PiCar(int power, int servo_v, int servo_h, int trig, int echo);
 	
 	/* Pwm pins (wiringPi) of right and left motors (from motor driver) */
 	static constexpr int right_motors_pwm_pin = 26;
