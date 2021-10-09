@@ -20,8 +20,11 @@
  * 
  */
 
-#ifndef PICAR_H
-#define PICAR_H
+#ifndef PICAR_HPP
+#define PICAR_HPP
+
+#include <exception>
+#include <string>
 
 namespace RaspberryPi {
 
@@ -95,6 +98,19 @@ private:
 	static constexpr int horizontal_servo_max_pos_down = 19;
 };
 
+class PiCar_exception : public std::exception {
+public:
+    PiCar_exception() = default;
+    PiCar_exception(std::string error) : m_error{std::move(error)} {}
+
+    const char* what() const noexcept override
+    {
+        return m_error.c_str();
+    }
+private:
+    std::string m_error{"An error has occurred!"};
+};
+	
 }  /* RaspberryPi namespace */
 
-#endif /* PICAR_H */
+#endif /* PICAR_HPP */
