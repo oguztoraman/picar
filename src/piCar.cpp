@@ -20,7 +20,6 @@
  * 
  */
 
-#include <iostream>
 #include <wiringPi.h>
 #include <softPwm.h>
 #include <chrono>
@@ -252,7 +251,7 @@ void PiCar::set_horizontal_servo_to_position(int pos_h)
  */
 void PiCar::set_vertical_servo_to_position(int pos_v)
 {
-	if (_pos_v <= horizontal_servo_max_pos_up){
+	if (pos_v <= horizontal_servo_max_pos_up){
 		pos_v = horizontal_servo_max_pos_up;
 	}
 	if (pos_v >= horizontal_servo_max_pos_down){
