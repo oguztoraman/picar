@@ -44,8 +44,7 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 {
 	/* WiringPi setup */
 	if (wiringPiSetup () == -1){
-		std::cerr << "Error! Couldn't setup WiringPi.\n";
-		exit(1);
+		throw PiCar_exception{"Couldn't setup WiringPi!"};
 	}
 	
 	/* Servos' pin settings */
@@ -69,8 +68,7 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 	camera.set(CV_CAP_PROP_FRAME_WIDTH, camera_resolution_width);
 	camera.set(CV_CAP_PROP_FRAME_HEIGHT, camera_resolution_height);
 	if (!camera.open()){
-		std::cerr << "Error! Couldn't open the Camera.\n";
-		exit(2);
+		throw PiCar_exception{"Couldn't open the Camera!"};
 	}
 	
 	/* Motors' pin settings */
@@ -217,8 +215,6 @@ void PiCar::turn_camera(const Camera& direction, float degree)
 			set_vertical_servo_to_position(19);	/*	~30 degrees	*/
 		}
 		break;
-	default: 
-		std::cerr << "Invalid direction!\n";
 	}
 }
 
@@ -365,7 +361,7 @@ void PiCar::set_engine_power(int power)
  */
 void PiCar::increase_power_by(int increment)
 {
-	engine_power += _increment;
+	engine_power += increment;
 	set_engine_power(engine_power);
 }
 
@@ -462,8 +458,6 @@ void PiCar::turn_car(const Car& direction)
 		digitalWrite(left_motors_forward_pin, LOW);
 		digitalWrite(left_motors_backward_pin, LOW);
 		break;
-	default:
-		std::cerr << "Invalid direction!\n";
 	}
 }
 	
