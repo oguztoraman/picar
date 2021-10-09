@@ -470,9 +470,9 @@ void PiCar::turn_car(const Car& direction)
 std::ostream& operator<<(std::ostream& os, const PiCar& picar)
 {
     std::ostringstream oss;
-    oss << "-*-*-*-*-*-*-*-PiCar-*-*-*-*-*-*-*-\n";
+    oss << "-*-*-*-*-*-*-PiCar-*-*-*-*-*-*-\n";
     oss << "Engine power: " << picar.engine_power << "\n";
-    oss << "Camera position: " << "\n"; // will be implemented
+    oss << "Camera position: ???" << "\n"; // will be implemented
     oss << "Distance from obstacle: " << picar.get_distance_from_obstacle() << "\n";
     return os << oss.str();
 }
