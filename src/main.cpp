@@ -27,11 +27,12 @@
 #include <opencv2/opencv.hpp>
 #include <raspicam/raspicam_cv.h>
 #include <thread>
+#include <mutex>
 
 #include "../inc/piCar.hpp"
 
 /* Setup the car with default control pins and engine power */
-auto car{RaspberryPi::PiCar::build_PiCar()};
+auto& picar{RaspberryPi::PiCar::build_PiCar()};
 
 /* Your autonomous driving test code */
 int main()
