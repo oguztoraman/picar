@@ -23,8 +23,10 @@
 #ifndef PICAR_HPP
 #define PICAR_HPP
 
-#include <exception>
+#include <iosfwd>
 #include <string>
+#include <exception>
+
 
 namespace RaspberryPi {
 
@@ -60,6 +62,8 @@ public:
 	void set_engine_power(int power);
 	void increase_power_by(int increment);
 	void decrease_power_by(int decrement);
+	
+	friend std::ostream& operator<<(std::ostream& os, const PiCar& picar);
 	
 private:
 	int engine_power;
