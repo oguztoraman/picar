@@ -8,6 +8,6 @@ echo "Updating the system..."
 sudo apt update
 sudo apt upgrade -y
 echo "Installing necessary softwares..."
-sudo apt install -y g++ libopencv-dev make wiringpi
+sudo apt install -y g++ libopencv-dev cmake wiringpi
 echo "Setup finished."
 exit
