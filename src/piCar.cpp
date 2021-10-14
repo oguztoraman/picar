@@ -44,7 +44,7 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 {
 	/* WiringPi setup */
 	if (wiringPiSetup () == -1){
-		throw PiCar_exception{"Couldn't setup WiringPi!"};
+		throw rpi_error{"PiCar failed to setup WiringPi!"};
 	}
 	
 	/* Servos' pin settings */
@@ -68,7 +68,7 @@ PiCar::PiCar(int power, int servo_v, int servo_h, int trig, int echo): engine_po
 	camera.set(CV_CAP_PROP_FRAME_WIDTH, camera_resolution_width);
 	camera.set(CV_CAP_PROP_FRAME_HEIGHT, camera_resolution_height);
 	if (!camera.open()){
-		throw PiCar_exception{"Couldn't open the Camera!"};
+		throw rpi_error{"PiCar failed to open the camera!"};
 	}
 	
 	/* Motors' pin settings */
