@@ -27,7 +27,6 @@
 #include <string>
 #include <exception>
 
-
 namespace RaspberryPi {
 
 /*  Camera directions  */
@@ -102,7 +101,7 @@ private:
 	static constexpr int horizontal_servo_max_pos_down = 19;
 };
 
-class PiCar_exception : public std::exception {
+class rpi_error : public std::exception {
 public:
     PiCar_exception() = default;
     PiCar_exception(std::string error) : m_error{std::move(error)} {}
