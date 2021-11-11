@@ -1,6 +1,6 @@
 # PiCar
 
-PiCar is a car platform for testing autonomous driving software.
+A car platform for testing autonomous driving software.
 
 ## Photo 
 - will be added
