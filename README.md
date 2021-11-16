@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/oguztoraman/picar/badge)](https://www.codefactor.io/repository/github/oguztoraman/picar)
+
 # PiCar
 
 A car platform for testing autonomous driving software.
