@@ -32,8 +32,8 @@ namespace raspberry_pi {
 
 class picar {
 public:
-//    cv::Mat camera_input;
-//    raspicam::RaspiCam_Cv camera;
+    cv::Mat camera_input;
+    raspicam::RaspiCam_Cv camera;
 
     enum class Camera{
         Right, Left, Up, Down
