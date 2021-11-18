@@ -1,8 +1,8 @@
 /*
  * main.cpp
- * 
- * PiCar control library C++ main file.
- * 
+ *
+ * picar control library C++ main file.
+ *
  * Copyright (C) 2021 Oğuz Toraman <oguz.toraman@protonmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -20,23 +20,21 @@
  *
  */
 
-#include <iostream>
-#include <wiringPi.h>
-#include <softPwm.h>
-#include <chrono>
-#include <opencv2/opencv.hpp>
-#include <raspicam/raspicam_cv.h>
-#include <thread>
 #include <mutex>
+#include <chrono>
+#include <thread>
+#include <iostream>
+//#include <softPwm.h>
+//#include <wiringPi.h>
+#include <opencv2/opencv.hpp>
+//#include <raspicam/raspicam_cv.h>
 
-#include "../inc/piCar.hpp"
+#include <picar.hpp>
 
-/* Setup the car with default control pins and engine power */
-auto& picar{RaspberryPi::PiCar::build_PiCar()};
+auto& car{raspberry_pi::picar::build()};
 
 /* Your autonomous driving test code */
 int main()
 {
-  
-	return 0;
+    return 0;
 }
