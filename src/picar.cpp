@@ -20,14 +20,18 @@
  *
  */
 
+#include  <picar.hpp>
+
 #include <chrono>
 #include <sstream>
+#ifndef PC
 #include <softPwm.h>
 #include <wiringPi.h>
+#endif
 #include <opencv2/opencv.hpp>
+#ifndef PC
 #include <raspicam/raspicam_cv.h>
-
-#include  <picar.hpp>
+#endif
 
 namespace raspberry_pi {
 
@@ -42,46 +46,46 @@ picar::picar(int power, int servo_v, int servo_h, int trig, int echo)
     : engine_power{power}, vertical_servo_pin{servo_v},
       horizontal_servo_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
 {
-	if (wiringPiSetup () == -1){
-		throw rpi_error{"PiCar failed to setup WiringPi!"};
-	}
+#ifndef PC
+    if (wiringPiSetup () == -1){
+        throw rpi_error{"PiCar failed to setup WiringPi!"};
+    }
 
-	pinMode(horizontal_servo_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(horizontal_servo_pin, 0, 100);
+    pinMode(horizontal_servo_pin, SOFT_PWM_OUTPUT);
+    softPwmCreate(horizontal_servo_pin, 0, 100);
 
-	pinMode(vertical_servo_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(vertical_servo_pin, 0, 100);
+    pinMode(vertical_servo_pin, SOFT_PWM_OUTPUT);
+    softPwmCreate(vertical_servo_pin, 0, 100);
 
     set_camera_to_default_position();
 
-	pinMode(trig_pin, OUTPUT);
-	pinMode(echo_pin, INPUT);
-	pullUpDnControl(echo_pin, PUD_DOWN);
-	digitalWrite(trig_pin, LOW);
-	delay(2000);
+    pinMode(trig_pin, OUTPUT);
+    pinMode(echo_pin, INPUT);
+    pullUpDnControl(echo_pin, PUD_DOWN);
+    digitalWrite(trig_pin, LOW);
+    delay(2000);
 
-	camera.set(CV_CAP_PROP_FRAME_WIDTH, camera_resolution_width);
-	camera.set(CV_CAP_PROP_FRAME_HEIGHT, camera_resolution_height);
-	if (!camera.open()){
-		throw rpi_error{"PiCar failed to open the camera!"};
-	}
+    camera.set(CV_CAP_PROP_FRAME_WIDTH, camera_resolution_width);
+    camera.set(CV_CAP_PROP_FRAME_HEIGHT, camera_resolution_height);
+    if (!camera.open()){
+        throw rpi_error{"PiCar failed to open the camera!"};
+    }
 
-	pinMode(right_motors_forward_pin, OUTPUT);
-	pinMode(right_motors_backward_pin, OUTPUT);
-	pinMode(left_motors_forward_pin, OUTPUT);
-	pinMode(left_motors_backward_pin, OUTPUT);
+    pinMode(right_motors_forward_pin, OUTPUT);
+    pinMode(right_motors_backward_pin, OUTPUT);
+    pinMode(left_motors_forward_pin, OUTPUT);
+    pinMode(left_motors_backward_pin, OUTPUT);
 
     stop();
 
-	pinMode(right_motors_pwm_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(right_motors_pwm_pin, 0, 100);
+    pinMode(right_motors_pwm_pin, SOFT_PWM_OUTPUT);
+    softPwmCreate(right_motors_pwm_pin, 0, 100);
 
-	pinMode(left_motors_pwm_pin, SOFT_PWM_OUTPUT);
-	softPwmCreate(left_motors_pwm_pin, 0, 100);
-
+    pinMode(left_motors_pwm_pin, SOFT_PWM_OUTPUT);
+    softPwmCreate(left_motors_pwm_pin, 0, 100);
+#endif
     set_engine_power(engine_power);
 }
-
 
 /*
  * build_PiCar
@@ -154,10 +158,12 @@ void picar::set_horizontal_servo_to_position(int pos_h)
     if (pos_h >= vertical_servo_max_pos_left){
         pos_h = vertical_servo_max_pos_left;
     }
-	softPwmWrite(horizontal_servo_pin, pos_h);
-	delay(50);
-	softPwmWrite(horizontal_servo_pin, 0);
-	delay(50);
+#ifndef PC
+    softPwmWrite(horizontal_servo_pin, pos_h);
+    delay(50);
+    softPwmWrite(horizontal_servo_pin, 0);
+    delay(50);
+#endif
 }
 
 /*
@@ -177,10 +183,12 @@ void picar::set_vertical_servo_to_position(int pos_v)
     if (pos_v >= horizontal_servo_max_pos_down){
         pos_v = horizontal_servo_max_pos_down;
     }
-	softPwmWrite(vertical_servo_pin, pos_v);
-	delay(50);
-	softPwmWrite(vertical_servo_pin, 0);
-	delay(50);
+#ifndef PC
+    softPwmWrite(vertical_servo_pin, pos_v);
+    delay(50);
+    softPwmWrite(vertical_servo_pin, 0);
+    delay(50);
+#endif
 }
 
 /*
@@ -216,22 +224,27 @@ void picar::set_camera_to_default_position()
  */
 int picar::get_distance_from_obstacle() const
 {
-	digitalWrite(trig_pin, HIGH);
-	delayMicroseconds(10);
-	digitalWrite(trig_pin, LOW);
-	while (digitalRead(echo_pin) != HIGH);
+#ifndef PC
+    digitalWrite(trig_pin, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trig_pin, LOW);
+    while (digitalRead(echo_pin) != HIGH);
     auto start = std::chrono::steady_clock::now();
-	while (digitalRead(echo_pin) != LOW);
+    while (digitalRead(echo_pin) != LOW);
     auto end = std::chrono::steady_clock::now();
     std::chrono::microseconds us{
         std::chrono::duration_cast<std::chrono::microseconds>(end - start)
     };
     int distance = static_cast<int>(us.count() / 58);
-	delayMicroseconds(150);
+    delayMicroseconds(150);
     if (distance < 0){
         return -1;
     }
     return distance;
+#else
+    return 0;
+#endif
+
 }
 
 /*
@@ -242,10 +255,12 @@ int picar::get_distance_from_obstacle() const
  */
 void picar::stop()
 {
-	digitalWrite(right_motors_forward_pin, LOW);
-	digitalWrite(right_motors_backward_pin, LOW);
-	digitalWrite(left_motors_forward_pin, LOW);
-	digitalWrite(left_motors_backward_pin, LOW);
+#ifndef PC
+    digitalWrite(right_motors_forward_pin, LOW);
+    digitalWrite(right_motors_backward_pin, LOW);
+    digitalWrite(left_motors_forward_pin, LOW);
+    digitalWrite(left_motors_backward_pin, LOW);
+#endif
 }
 
 /*
@@ -266,8 +281,10 @@ void picar::set_engine_power(int power)
     if (power <= 0){
         power = 0;
     }
-	softPwmWrite(right_motors_pwm_pin, power);
-	softPwmWrite(left_motors_pwm_pin, power);
+#ifndef PC
+    softPwmWrite(right_motors_pwm_pin, power);
+    softPwmWrite(left_motors_pwm_pin, power);
+#endif
 }
 
 /*
@@ -310,10 +327,12 @@ void picar::decrease_power_by(int decrement)
  */
 void picar::go_forward()
 {
-	digitalWrite(right_motors_forward_pin, HIGH);
-	digitalWrite(right_motors_backward_pin, LOW);
-	digitalWrite(left_motors_forward_pin, HIGH);
-	digitalWrite(left_motors_backward_pin, LOW);
+#ifndef PC
+    digitalWrite(right_motors_forward_pin, HIGH);
+    digitalWrite(right_motors_backward_pin, LOW);
+    digitalWrite(left_motors_forward_pin, HIGH);
+    digitalWrite(left_motors_backward_pin, LOW);
+#endif
 }
 
 /*
@@ -324,10 +343,12 @@ void picar::go_forward()
  */
 void picar::go_backward()
 {
-	digitalWrite(right_motors_forward_pin, LOW);
-	digitalWrite(right_motors_backward_pin, HIGH);
-	digitalWrite(left_motors_forward_pin, LOW);
-	digitalWrite(left_motors_backward_pin, HIGH);
+#ifndef PC
+    digitalWrite(right_motors_forward_pin, LOW);
+    digitalWrite(right_motors_backward_pin, HIGH);
+    digitalWrite(left_motors_forward_pin, LOW);
+    digitalWrite(left_motors_backward_pin, HIGH);
+#endif
 }
 
 /*
@@ -355,28 +376,36 @@ void picar::turn_car(const Car& direction)
 {
     switch (direction) {
     case Car::Turn_Right_Forward :
-		digitalWrite(right_motors_forward_pin, LOW);
-		digitalWrite(right_motors_backward_pin, LOW);
-		digitalWrite(left_motors_forward_pin, HIGH);
-		digitalWrite(left_motors_backward_pin, LOW);
+#ifndef PC
+        digitalWrite(right_motors_forward_pin, LOW);
+        digitalWrite(right_motors_backward_pin, LOW);
+        digitalWrite(left_motors_forward_pin, HIGH);
+        digitalWrite(left_motors_backward_pin, LOW);
+#endif
         break;
     case Car::Turn_Left_Forward :
-		digitalWrite(right_motors_forward_pin, HIGH);
-		digitalWrite(right_motors_backward_pin, LOW);
-		digitalWrite(left_motors_forward_pin, LOW);
-		digitalWrite(left_motors_backward_pin, LOW);
+#ifndef PC
+        digitalWrite(right_motors_forward_pin, HIGH);
+        digitalWrite(right_motors_backward_pin, LOW);
+        digitalWrite(left_motors_forward_pin, LOW);
+        digitalWrite(left_motors_backward_pin, LOW);
+#endif
         break;
     case Car::Turn_Right_Backward :
-		digitalWrite(right_motors_forward_pin, LOW);
-		digitalWrite(right_motors_backward_pin, LOW);
-		digitalWrite(left_motors_forward_pin, LOW);
-		digitalWrite(left_motors_backward_pin, HIGH);
+#ifndef PC
+        digitalWrite(right_motors_forward_pin, LOW);
+        digitalWrite(right_motors_backward_pin, LOW);
+        digitalWrite(left_motors_forward_pin, LOW);
+        digitalWrite(left_motors_backward_pin, HIGH);
+#endif
         break;
     case Car::Turn_Left_Backward :
-		digitalWrite(right_motors_forward_pin, LOW);
-		digitalWrite(right_motors_backward_pin, HIGH);
-		digitalWrite(left_motors_forward_pin, LOW);
-		digitalWrite(left_motors_backward_pin, LOW);
+#ifndef PC
+        digitalWrite(right_motors_forward_pin, LOW);
+        digitalWrite(right_motors_backward_pin, HIGH);
+        digitalWrite(left_motors_forward_pin, LOW);
+        digitalWrite(left_motors_backward_pin, LOW);
+#endif
         break;
     }
 }
@@ -397,4 +426,4 @@ std::ostream& operator<<(std::ostream& os, const picar& car)
     return os << oss.str();
 }
 
-}  /* raspberry_pi namespace */
+}  /* namespace raspberry_pi */

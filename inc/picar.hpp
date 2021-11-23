@@ -23,6 +23,8 @@
 #ifndef PICAR_HPP
 #define PICAR_HPP
 
+#define PC
+
 #include <cmath>
 #include <iosfwd>
 #include <string>
@@ -32,9 +34,10 @@ namespace raspberry_pi {
 
 class picar {
 public:
+#ifndef PC
     cv::Mat camera_input;
     raspicam::RaspiCam_Cv camera;
-
+#endif
     enum class Camera{
         Right, Left, Up, Down
     };
@@ -108,39 +111,39 @@ private:
     static constexpr int horizontal_servo_max_pos_up   = 6;
     static constexpr int horizontal_servo_max_pos_down = 19;
 
-    static constexpr int camera_angles_right[2][11]{
+    static constexpr int camera_angles_right[][11]{
         { 5, 14, 23, 32, 41, 50, 59, 68, 77, 86, 90},
         {14, 13, 12, 11, 10,  9,  8,  7,  6,  5, 4}
     };
 
-    static constexpr int camera_angles_left[2][10]{
+    static constexpr int camera_angles_left[][10]{
         { 5, 15, 25, 35, 45, 55, 65, 75, 85, 90},
         {14, 15, 16, 17, 18, 19, 20, 21, 22, 23}
     };
 
-    static constexpr int camera_angles_up[2][10]{
+    static constexpr int camera_angles_up[][10]{
         { 5, 15, 25, 35, 45, 55, 65, 75, 85, 90},
         {15, 14, 13, 12, 11,  9,  8,  7,  6, 5}
     };
 
-    static constexpr int camera_angles_down[2][5]{
+    static constexpr int camera_angles_down[][5]{
         { 4, 11, 19, 23, 90},
         {15, 16, 17, 18, 19}
     };
 
-    template <int n>
+    template <int N>
     [[nodiscard]]
-    int find_pwm(float angle, const int(&angle_pwm_table)[2][n]) const
+    int find_pwm(float angle, const int(&angle_pwm_table)[2][N]) const
     {
         if (angle <= angle_pwm_table[0][0]){
             return angle_pwm_table[1][0];
         }
-        if (angle >= angle_pwm_table[0][n - 1]){
-            return angle_pwm_table[1][n - 1];
+        if (angle >= angle_pwm_table[0][N - 1]){
+            return angle_pwm_table[1][N - 1];
         }
-        int i{n/2};
-        for (int exp{2}, step{}; i >= 1 && i < n; ++exp){
-            step = n/std::pow(2, exp) ? n/std::pow(2, exp) : 1;
+        int i{N/2};
+        for (int exp{2}, step{}; i >= 1 && i < N; ++exp){
+            step = N/std::pow(2, exp) ? N/std::pow(2, exp) : 1;
             if (angle > angle_pwm_table[0][i - 1] &&
                 angle <= angle_pwm_table[0][i]){
                     break;
@@ -165,6 +168,6 @@ private:
     std::string m_error{"An error has occurred!"};
 };
 
-}  /* raspberry_pi namespace */
+}  /* namespace raspberry_pi */
 
 #endif /* PICAR_HPP */

@@ -20,16 +20,20 @@
  *
  */
 
+#include <picar.hpp>
+
 #include <mutex>
 #include <chrono>
 #include <thread>
 #include <iostream>
-//#include <softPwm.h>
-//#include <wiringPi.h>
+#ifndef PC
+#include <softPwm.h>
+#include <wiringPi.h>
+#endif
 #include <opencv2/opencv.hpp>
-//#include <raspicam/raspicam_cv.h>
-
-#include <picar.hpp>
+#ifndef PC
+#include <raspicam/raspicam_cv.h>
+#endif
 
 auto& car{raspberry_pi::picar::build()};
 
