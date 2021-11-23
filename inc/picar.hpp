@@ -23,7 +23,7 @@
 #ifndef PICAR_HPP
 #define PICAR_HPP
 
-#define PC
+#define PC_
 
 #include <cmath>
 #include <iosfwd>
