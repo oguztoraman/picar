@@ -244,7 +244,6 @@ int picar::get_distance_from_obstacle() const
 #else
     return 0;
 #endif
-
 }
 
 /*
