@@ -14,4 +14,6 @@ file(GLOB SRCS "${PROJECT_SOURCE_DIR}/src/*.cpp")
 
 add_executable(picar main.cpp ${SRCS})
 
+add_compile_options(-Wall -Werror)
+
 target_link_libraries(picar ${OpenCV_LIBS} pthread)

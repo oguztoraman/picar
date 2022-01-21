@@ -3,7 +3,7 @@
  *
  * picar control library C++ source file.
  *
- * Copyright (C) 2021 Oğuz Toraman <oguz.toraman@protonmail.com>
+ * Copyright (C) 2021-2022 Oğuz Toraman <oguz.toraman@protonmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,16 +22,15 @@
 
 #include  <picar.hpp>
 
-#include <chrono>
-#include <sstream>
-#ifndef PC
+#ifndef PC /* raspberry pi */
 #include <softPwm.h>
 #include <wiringPi.h>
-#endif
-#include <opencv2/opencv.hpp>
-#ifndef PC
 #include <raspicam/raspicam_cv.h>
-#endif
+#endif /* board */
+
+#include <chrono>
+#include <sstream>
+#include <opencv2/opencv.hpp>
 
 namespace raspberry_pi {
 
@@ -46,7 +45,7 @@ picar::picar(int power, int servo_v, int servo_h, int trig, int echo)
     : engine_power{power}, vertical_servo_pin{servo_v},
       horizontal_servo_pin{servo_h}, trig_pin{trig}, echo_pin{echo}
 {
-#ifndef PC
+#ifndef PC /* raspberry pi */
     if (wiringPiSetup () == -1){
         throw rpi_error{"PiCar failed to setup WiringPi!"};
     }
@@ -83,7 +82,7 @@ picar::picar(int power, int servo_v, int servo_h, int trig, int echo)
 
     pinMode(left_motors_pwm_pin, SOFT_PWM_OUTPUT);
     softPwmCreate(left_motors_pwm_pin, 0, 100);
-#endif
+#endif /* board */
     set_engine_power(engine_power);
 }
 
@@ -158,12 +157,12 @@ void picar::set_horizontal_servo_to_position(int pos_h)
     if (pos_h >= vertical_servo_max_pos_left){
         pos_h = vertical_servo_max_pos_left;
     }
-#ifndef PC
+#ifndef PC /* raspberry pi */
     softPwmWrite(horizontal_servo_pin, pos_h);
     delay(50);
     softPwmWrite(horizontal_servo_pin, 0);
     delay(50);
-#endif
+#endif /* board */
 }
 
 /*
@@ -183,12 +182,12 @@ void picar::set_vertical_servo_to_position(int pos_v)
     if (pos_v >= horizontal_servo_max_pos_down){
         pos_v = horizontal_servo_max_pos_down;
     }
-#ifndef PC
+#ifndef PC /* raspberry pi */
     softPwmWrite(vertical_servo_pin, pos_v);
     delay(50);
     softPwmWrite(vertical_servo_pin, 0);
     delay(50);
-#endif
+#endif /* board */
 }
 
 /*
@@ -224,7 +223,7 @@ void picar::set_camera_to_default_position()
  */
 int picar::get_distance_from_obstacle() const
 {
-#ifndef PC
+#ifndef PC /* raspberry pi */
     digitalWrite(trig_pin, HIGH);
     delayMicroseconds(10);
     digitalWrite(trig_pin, LOW);
@@ -243,7 +242,7 @@ int picar::get_distance_from_obstacle() const
     return distance;
 #else
     return 0;
-#endif
+#endif /* board */
 }
 
 /*
@@ -254,12 +253,12 @@ int picar::get_distance_from_obstacle() const
  */
 void picar::stop()
 {
-#ifndef PC
+#ifndef PC /* raspberry pi */
     digitalWrite(right_motors_forward_pin, LOW);
     digitalWrite(right_motors_backward_pin, LOW);
     digitalWrite(left_motors_forward_pin, LOW);
     digitalWrite(left_motors_backward_pin, LOW);
-#endif
+#endif /* board */
 }
 
 /*
@@ -280,10 +279,10 @@ void picar::set_engine_power(int power)
     if (power <= 0){
         power = 0;
     }
-#ifndef PC
+#ifndef PC /* raspberry pi */
     softPwmWrite(right_motors_pwm_pin, power);
     softPwmWrite(left_motors_pwm_pin, power);
-#endif
+#endif /* board */
 }
 
 /*
@@ -326,12 +325,12 @@ void picar::decrease_power_by(int decrement)
  */
 void picar::go_forward()
 {
-#ifndef PC
+#ifndef PC /* raspberry pi */
     digitalWrite(right_motors_forward_pin, HIGH);
     digitalWrite(right_motors_backward_pin, LOW);
     digitalWrite(left_motors_forward_pin, HIGH);
     digitalWrite(left_motors_backward_pin, LOW);
-#endif
+#endif /* board */
 }
 
 /*
@@ -342,12 +341,12 @@ void picar::go_forward()
  */
 void picar::go_backward()
 {
-#ifndef PC
+#ifndef PC /* raspberry pi */
     digitalWrite(right_motors_forward_pin, LOW);
     digitalWrite(right_motors_backward_pin, HIGH);
     digitalWrite(left_motors_forward_pin, LOW);
     digitalWrite(left_motors_backward_pin, HIGH);
-#endif
+#endif /* board */
 }
 
 /*
@@ -375,36 +374,36 @@ void picar::turn_car(const Car& direction)
 {
     switch (direction) {
     case Car::Turn_Right_Forward :
-#ifndef PC
+#ifndef PC /* raspberry pi */
         digitalWrite(right_motors_forward_pin, LOW);
         digitalWrite(right_motors_backward_pin, LOW);
         digitalWrite(left_motors_forward_pin, HIGH);
         digitalWrite(left_motors_backward_pin, LOW);
-#endif
+#endif /* board */
         break;
     case Car::Turn_Left_Forward :
-#ifndef PC
+#ifndef PC /* raspberry pi */
         digitalWrite(right_motors_forward_pin, HIGH);
         digitalWrite(right_motors_backward_pin, LOW);
         digitalWrite(left_motors_forward_pin, LOW);
         digitalWrite(left_motors_backward_pin, LOW);
-#endif
+#endif /* board */
         break;
     case Car::Turn_Right_Backward :
-#ifndef PC
+#ifndef PC /* raspberry pi */
         digitalWrite(right_motors_forward_pin, LOW);
         digitalWrite(right_motors_backward_pin, LOW);
         digitalWrite(left_motors_forward_pin, LOW);
         digitalWrite(left_motors_backward_pin, HIGH);
-#endif
+#endif /* board */
         break;
     case Car::Turn_Left_Backward :
-#ifndef PC
+#ifndef PC /* raspberry pi */
         digitalWrite(right_motors_forward_pin, LOW);
         digitalWrite(right_motors_backward_pin, HIGH);
         digitalWrite(left_motors_forward_pin, LOW);
         digitalWrite(left_motors_backward_pin, LOW);
-#endif
+#endif /* board */
         break;
     }
 }

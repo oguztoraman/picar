@@ -3,7 +3,7 @@
  *
  * picar control library C++ header file.
  *
- * Copyright (C) 2021 Oğuz Toraman <oguz.toraman@protonmail.com>
+ * Copyright (C) 2021-2022 Oğuz Toraman <oguz.toraman@protonmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 #ifndef PICAR_HPP
 #define PICAR_HPP
 
-#define PC_
+#define PC
 
 #include <cmath>
 #include <iosfwd>
@@ -34,10 +34,13 @@ namespace raspberry_pi {
 
 class picar {
 public:
-#ifndef PC
+    static_assert (__cplusplus >= 202002L, "c++20 required!");
+
+#ifndef PC /* raspberry pi */
     cv::Mat camera_input;
     raspicam::RaspiCam_Cv camera;
-#endif
+#endif /* board */
+
     enum class Camera{
         Right, Left, Up, Down
     };
