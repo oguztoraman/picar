@@ -1,11 +1,9 @@
-[![CodeFactor](https://www.codefactor.io/repository/github/oguztoraman/picar/badge)](https://www.codefactor.io/repository/github/oguztoraman/picar)
-
 # PiCar
 
 A car platform for testing autonomous driving software.
 
 ## Photo 
-- will be added
+- Will be added
 
 ## List of Used Components
 - [Raspberry Pi Model 3 B+](https://www.raspberrypi.org/products/raspberry-pi-3-model-b-plus/)
