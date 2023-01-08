@@ -3,7 +3,7 @@
  *
  * picar control library C++ main file.
  *
- * Copyright (C) 2021 Oğuz Toraman <oguz.toraman@protonmail.com>
+ * Copyright (C) 2021-2023 Oğuz Toraman <oguz.toraman@protonmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
