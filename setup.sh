@@ -1,9 +1,8 @@
 #! /bin/bash
 #
-#  Setup.sh
-#   
-#  A bash script that updates the system and installs necessary software packages for PiCar
-#   
+# SPDX-FileCopyrightText: Copyright (c) 2022-2024 Oğuz Toraman <oguz.toraman@tutanota.com>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 echo "Updating the system..."
 sudo apt update
 sudo apt upgrade -y
